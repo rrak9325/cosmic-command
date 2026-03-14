@@ -41,23 +41,23 @@
         .glass { background: rgba(10, 10, 25, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
         .header { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; background: transparent; }
         .tabs { display: flex; gap: 1rem; padding: 0 2rem; }
-        .tab { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .tab { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; cursor: pointer; transition: all 0.2s; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
         .tab:hover { background: rgba(168, 85, 247, 0.2); }
         .tab.active { background: rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.5); animation: tabPulse 3s ease-in-out infinite; }
         @keyframes tabPulse { 0%,100% { box-shadow: 0 0 0 rgba(168,85,247,0); } 50% { box-shadow: 0 0 12px rgba(168,85,247,0.4); } }
-        .search-section { padding: 2rem; display: flex; justify-content: center; }
+        .search-section { padding: 1rem 2rem; display: flex; justify-content: center; }
         .search-box { width: 100%; max-width: 800px; position: relative; }
-        .search-input { width: 100%; padding: 1.5rem 6rem 1.5rem 2rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 50px; color: #fff; font-size: 1.2rem; transition: all 0.3s; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); }
+        .search-input { width: 100%; padding: 1.5rem 6rem 1.5rem 2rem; background: rgba(10, 10, 25, 0.6); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 50px; color: #fff; font-size: 1.2rem; transition: all 0.3s; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
         .search-input:focus { outline: none; border-color: rgba(168, 85, 247, 0.8); box-shadow: 0 0 30px rgba(168, 85, 247, 0.4); }
         .search-controls { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); display: flex; gap: 0.5rem; }
         .search-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(168, 85, 247, 0.3); border: 1px solid rgba(168, 85, 247, 0.5); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: #fff; }
         .search-btn:hover { background: rgba(168, 85, 247, 0.5); transform: scale(1.1); }
-        .widget-grid { flex: 1; padding: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; overflow-y: auto; }
-        .widget { background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 1.5rem; cursor: move; transition: all 0.3s; display: flex; flex-direction: column; max-height: 500px; animation: widgetIn 0.4s ease both; box-shadow: 0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08); }
+        .widget-grid { flex: 1; padding: 1rem 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; overflow-y: auto; align-content: start; }
+        .widget { background: rgba(5, 5, 15, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 1rem; cursor: move; transition: all 0.3s; display: flex; flex-direction: column; max-height: 420px; animation: widgetIn 0.4s ease both; box-shadow: 0 2px 16px rgba(0,0,0,0.4); }
         @keyframes widgetIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-        .widget:hover { border-color: rgba(168, 85, 247, 0.6); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(168,85,247,0.2), inset 0 1px 0 rgba(255,255,255,0.12); }
-        .widget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
-        .widget-title { font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.9rem; }
+        .widget:hover { border-color: rgba(168, 85, 247, 0.5); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(168,85,247,0.15), inset 0 1px 0 rgba(255,255,255,0.08); }
+        .widget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+        .widget-title { font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; text-shadow: 0 1px 6px rgba(0,0,0,0.9); }
         .widget-close { cursor: pointer; opacity: 0.5; transition: opacity 0.2s; }
         .widget-close:hover { opacity: 1; color: #ef4444; }
         .widget-content { overflow-y: auto; flex: 1; }
@@ -68,7 +68,7 @@
         .news-item { padding: 0.75rem; background: rgba(255,255,255,0.04); border-radius: 8px; margin-bottom: 0.75rem; border-left: 3px solid rgba(168, 85, 247, 0.5); cursor: pointer; transition: all 0.2s; }
         .news-item:hover { background: rgba(168, 85, 247, 0.15); transform: translateX(5px); }
         .link-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
-        .link-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; text-decoration: none; color: #fff; transition: all 0.2s; padding: 0.55rem 0.4rem; backdrop-filter: blur(10px); }
+        .link-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; text-decoration: none; color: #fff; transition: all 0.2s; padding: 0.55rem 0.4rem; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
         .link-item:hover { background: rgba(168, 85, 247, 0.2); transform: translateY(-3px); }
         .warp-btn { position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #ec4899); border: none; color: #fff; font-size: 1.5rem; cursor: pointer; box-shadow: 0 0 30px rgba(168, 85, 247, 0.6); transition: all 0.3s; z-index: 100; animation: warpPulse 4s ease-in-out infinite; }
         @keyframes warpPulse { 0%,100% { box-shadow: 0 0 30px rgba(168,85,247,0.6); } 50% { box-shadow: 0 0 50px rgba(168,85,247,0.9), 0 0 80px rgba(236,72,153,0.4); } }
@@ -76,6 +76,69 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
         ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.5); border-radius: 4px; }
+
+        /* Search Suggestions */
+        #search-suggestions {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: rgba(8, 8, 20, 0.98);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 18px;
+            overflow: hidden;
+            z-index: 600;
+            display: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            padding: 0.4rem 0;
+        }
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.7rem 1.5rem;
+            cursor: pointer;
+            transition: background 0.12s;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.85);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .suggestion-item:hover, .suggestion-item.active {
+            background: rgba(168, 85, 247, 0.18);
+        }
+        .suggestion-item i { color: rgba(255,255,255,0.3); font-size: 0.75rem; flex-shrink: 0; }
+        #quick-links-panel {
+            position: absolute;
+            top: calc(100% + 12px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.95);
+            width: 320px;
+            background: rgba(8, 8, 20, 0.92);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 20px;
+            padding: 1.25rem;
+            z-index: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+        }
+        #quick-links-panel.open {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(-50%) scale(1);
+        }
+        .ql-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .ql-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.5); }
+        .ql-add-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(168,85,247,0.2); border: 1px solid rgba(168,85,247,0.4); color: #a855f7; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; transition: all 0.2s; }
+        .ql-add-btn:hover { background: rgba(168,85,247,0.4); }
+        .ql-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+        .ql-item { position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; text-decoration: none; color: #fff; padding: 0.6rem 0.3rem; border-radius: 14px; transition: all 0.2s; cursor: pointer; }
+        .ql-item:hover { background: rgba(168,85,247,0.15); }
+        .ql-item:hover .ql-delete { opacity: 1; }
+        .ql-icon { width: 46px; height: 46px; border-radius: 14px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; }
+        .ql-name { font-size: 0.65rem; color: rgba(255,255,255,0.75); text-align: center; max-width: 56px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 1px 4px rgba(0,0,0,0.9); }
+        .ql-delete { position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: rgba(239,68,68,0.9); border: none; color: #fff; font-size: 0.6rem; cursor: pointer; opacity: 0; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
@@ -95,12 +158,12 @@
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <img id="profile-pic" src="https://ui-avatars.com/api/?name=RANVER&background=a855f7&color=fff&size=64" alt="Profile" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(168, 85, 247, 0.5); cursor: pointer;" title="Click to change profile picture">
                 <div>
-                    <div style="font-size: 1.5rem; font-weight: 700; text-shadow: 0 0 20px rgba(168, 85, 247, 0.8);">RANVER</div>
-                    <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); letter-spacing: 0.2em;">COSMIC COMMAND</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; text-shadow: 0 1px 8px rgba(0,0,0,1), 0 0 20px rgba(168, 85, 247, 0.8);">RANVER</div>
+                    <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.7); letter-spacing: 0.2em; text-shadow: 0 1px 6px rgba(0,0,0,0.9);">COSMIC COMMAND</div>
                 </div>
             </div>
             <div style="display: flex; align-items: center; gap: 2rem;">
-                <div style="display: flex; align-items: center; gap: 1.5rem; padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.05); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);">
+                <div style="display: flex; align-items: center; gap: 1.5rem; padding: 0.75rem 1.5rem; background: rgba(5,5,15,0.55); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);">
                     <svg width="80" height="80" viewBox="0 0 100 100" id="nav-analog-clock">
                         <circle cx="50" cy="50" r="48" fill="rgba(0,0,0,0.3)" stroke="rgba(168, 85, 247, 0.5)" stroke-width="2"/>
                         <circle cx="50" cy="50" r="3" fill="#a855f7"/>
@@ -109,8 +172,8 @@
                         <line id="nav-second-hand" x1="50" y1="50" x2="50" y2="15" stroke="#ec4899" stroke-width="2" stroke-linecap="round"/>
                     </svg>
                     <div style="text-align: left;">
-                        <div style="font-size: 1.2rem; font-weight: 600; color: #a855f7;" id="nav-time">00:00</div>
-                        <div style="font-size: 0.7rem; color: rgba(255, 255, 255, 0.5);" id="nav-date">Loading...</div>
+                        <div style="font-size: 1.2rem; font-weight: 600; color: #a855f7; text-shadow: 0 1px 6px rgba(0,0,0,0.9);" id="nav-time">00:00</div>
+                        <div style="font-size: 0.7rem; color: rgba(255, 255, 255, 0.7); text-shadow: 0 1px 4px rgba(0,0,0,0.9);" id="nav-date">Loading...</div>
                     </div>
                     <div style="width: 1px; height: 60px; background: rgba(255, 255, 255, 0.1);"></div>
                     <div style="text-align: center;">
@@ -130,16 +193,43 @@
         </div>
 
         <div class="search-section">
-            <div class="search-box">
-                <input type="text" id="search-input" class="search-input" target="_blank" placeholder="">
+            <div class="search-box" style="position: relative;">
+                <input type="text" id="search-input" class="search-input" placeholder="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                 <div class="search-controls">
-                    <button class="search-btn" id="voice-search" title="Voice Search"><i class="fas fa-microphone"></i></button>
-                    <button class="search-btn" id="search-engine-toggle" title="Toggle Search Engine" data-engine="brave"><i class="fas fa-shield-alt"></i></button>
+                    <button class="search-btn" id="voice-search" title="Voice Search" tabindex="0"><i class="fas fa-microphone"></i></button>
+                    <button class="search-btn" id="search-engine-toggle" title="Search with Brave" style="padding:0;overflow:hidden;"><img src="https://brave.com/static-assets/images/brave-logo-sans-text.svg" style="width:22px;height:22px;object-fit:contain;" onerror="this.outerHTML='<i class=\'fas fa-shield-alt\'></i>'"></button>
+                    <button class="search-btn" id="quick-links-btn" title="Quick Links"><i class="fas fa-th"></i></button>
+                </div>
+                <div id="search-suggestions"></div>
+                <div id="quick-links-panel">
+                    <div class="ql-header">
+                        <span class="ql-title">Quick Links</span>
+                        <button class="ql-add-btn" id="ql-add"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="ql-grid" id="ql-grid"></div>
                 </div>
             </div>
         </div>
 
         <div class="widget-grid" id="widget-grid"></div>
+
+        <!-- Intel Feed Page -->
+        <div id="intel-page" style="display:none; flex:1; padding:1rem 2rem; overflow-y:auto; flex-direction:column; gap:1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="intel-cat" data-cat="all" style="padding:0.5rem 1.2rem; background:rgba(168,85,247,0.3); border:1px solid rgba(168,85,247,0.5); border-radius:8px; color:#fff; cursor:pointer; font-size:0.85rem; font-family:inherit;">All</button>
+                    <button class="intel-cat" data-cat="india" style="padding:0.5rem 1.2rem; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; cursor:pointer; font-size:0.85rem; font-family:inherit;">🇮🇳 India</button>
+                    <button class="intel-cat" data-cat="world" style="padding:0.5rem 1.2rem; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; cursor:pointer; font-size:0.85rem; font-family:inherit;">World</button>
+                    <button class="intel-cat" data-cat="hn" style="padding:0.5rem 1.2rem; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:8px; color:#fff; cursor:pointer; font-size:0.85rem; font-family:inherit;">Tech</button>
+                </div>
+                <button id="intel-refresh" style="padding:0.5rem 0.75rem; background:rgba(16,185,129,0.2); border:1px solid rgba(16,185,129,0.4); border-radius:8px; color:#10b981; cursor:pointer;"><i class="fas fa-sync-alt"></i></button>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem;">
+                <span style="width:8px;height:8px;background:#10b981;border-radius:50%;display:inline-block;"></span>
+                <span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">Live feed</span>
+            </div>
+            <div id="intel-articles" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(340px,1fr)); gap:0.85rem;"></div>
+        </div>
     </div>
 
     <button class="warp-btn" id="warp-btn" title="Shuffle Widgets"><i class="fas fa-random"></i></button>
@@ -477,21 +567,82 @@
         typePhrase(placeholders[0]);
 
         let searchEngine = 'brave';
-        document.getElementById('search-engine-toggle').addEventListener('click', function() {
-            searchEngine = searchEngine === 'brave' ? 'duckduckgo' : 'brave';
-            this.innerHTML = searchEngine === 'brave' ? '<i class="fas fa-shield-alt"></i>' : '<i class="fas fa-duck"></i>';
-        });
-        document.getElementById('search-input').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const query = e.target.value.trim();
-                if (!query) return;
-                if (query.includes('.') && !query.includes(' ')) {
-                    window.open(query.startsWith('http') ? query : 'https://' + query, '_blank');
-                } else {
-                    const url = searchEngine === 'brave' ? 'https://search.brave.com/search?q=' + encodeURIComponent(query) : 'https://duckduckgo.com/?q=' + encodeURIComponent(query);
-                    window.open(url, '_blank');
-                }
+        let voiceActive = false;
+        // Search suggestions
+        const suggestionsBox = document.getElementById('search-suggestions');
+        let suggestionIndex = -1;
+        let suggestTimeout = null;
+
+        function hideSuggestions() {
+            suggestionsBox.style.display = 'none';
+            suggestionIndex = -1;
+        }
+
+        function selectSuggestion(text) {
+            searchInput.value = text;
+            hideSuggestions();
+            doSearch(text);
+        }
+
+        function doSearch(query) {
+            if (!query) return;
+            if (query.includes('.') && !query.includes(' ')) {
+                window.open(query.startsWith('http') ? query : 'https://' + query, '_blank');
+            } else {
+                window.open('https://search.brave.com/search?q=' + encodeURIComponent(query), '_blank');
             }
+            searchInput.value = '';
+            searchInput.blur();
+            hideSuggestions();
+        }
+
+        async function fetchSuggestions(query) {
+            if (!query.trim()) { hideSuggestions(); return; }
+            try {
+                const res = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://duckduckgo.com/ac/?q=' + encodeURIComponent(query) + '&type=list'));
+                const data = await res.json();
+                const suggestions = data[1] || [];
+                if (!suggestions.length) { hideSuggestions(); return; }
+                suggestionsBox.innerHTML = '';
+                suggestions.slice(0, 7).forEach((s) => {
+                    const item = document.createElement('div');
+                    item.className = 'suggestion-item';
+                    item.innerHTML = '<i class="fas fa-search"></i><span>' + s.replace(/</g, '&lt;') + '</span>';
+                    item.addEventListener('mousedown', (e) => { e.preventDefault(); selectSuggestion(s); });
+                    suggestionsBox.appendChild(item);
+                });
+                suggestionsBox.style.display = 'block';
+                suggestionIndex = -1;
+            } catch(e) { hideSuggestions(); }
+        }
+
+        searchInput.addEventListener('input', () => {
+            clearTimeout(suggestTimeout);
+            suggestTimeout = setTimeout(() => fetchSuggestions(searchInput.value), 200);
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            const items = suggestionsBox.querySelectorAll('.suggestion-item');
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                suggestionIndex = Math.min(suggestionIndex + 1, items.length - 1);
+                items.forEach((el, i) => el.classList.toggle('active', i === suggestionIndex));
+                if (items[suggestionIndex]) searchInput.value = items[suggestionIndex].querySelector('span').textContent;
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                suggestionIndex = Math.max(suggestionIndex - 1, -1);
+                items.forEach((el, i) => el.classList.toggle('active', i === suggestionIndex));
+            } else if (e.key === 'Enter') {
+                doSearch(searchInput.value.trim());
+            } else if (e.key === 'Escape') {
+                hideSuggestions();
+            }
+        });
+
+        searchInput.addEventListener('blur', (e) => {
+            if (voiceActive) return;
+            if (e.relatedTarget && e.relatedTarget.id === 'voice-search') return;
+            setTimeout(hideSuggestions, 200);
         });
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -501,15 +652,46 @@
         });
 
         // Voice Search
-        document.getElementById('voice-search').addEventListener('click', () => {
-            if ('webkitSpeechRecognition' in window) {
-                const recognition = new webkitSpeechRecognition();
-                recognition.lang = 'en-US';
-                recognition.onresult = (event) => { document.getElementById('search-input').value = event.results[0][0].transcript; };
-                recognition.start();
-            } else {
-                alert('Voice search not supported');
-            }
+        document.getElementById('voice-search').addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (voiceActive) return;
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) { alert('Voice search not supported in this browser'); return; }
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 1;
+            const voiceBtn = document.getElementById('voice-search');
+            voiceActive = true;
+            voiceBtn.innerHTML = '<i class="fas fa-circle" style="color:#ef4444;"></i>';
+            recognition.onstart = () => {
+                searchInput.focus();
+            };
+            recognition.onresult = (event) => {
+                let interim = '';
+                let final = '';
+                for (let i = 0; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) final += event.results[i][0].transcript;
+                    else interim += event.results[i][0].transcript;
+                }
+                const text = final || interim;
+                searchInput.value = text;
+                searchInput.focus();
+            };
+            recognition.onend = () => {
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                voiceActive = false;
+                const val = searchInput.value.trim();
+                if (val) {
+                    setTimeout(() => doSearch(val), 300);
+                }
+            };
+            recognition.onerror = (err) => {
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                voiceActive = false;
+            };
+            recognition.start();
         });
 
         // Profile Picture
@@ -712,14 +894,13 @@
             },
             news: {
                 title: '📰 Intel Feed',
-                content: '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;"><div style="display: flex; gap: 0.5rem; flex-wrap: wrap;"><button class="news-cat" data-cat="technology" style="padding: 0.5rem 1rem; background: rgba(168, 85, 247, 0.3); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">Tech</button><button class="news-cat" data-cat="general" style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">Top</button><button class="news-cat" data-cat="business" style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">Business</button></div><button class="refresh-news-btn" style="padding: 0.5rem; background: rgba(6, 182, 127, 0.3); border: 1px solid rgba(6, 182, 127, 0.5); border-radius: 8px; color: #fff; cursor: pointer;"><i class="fas fa-sync-alt"></i></button></div><div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;"><span class="animate-pulse" style="width: 8px; height: 8px; background: #10b981; border-radius: 50%;"></span>Live • Real news with images</div><div class="news-container"></div>',
+                content: '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;"><div style="display: flex; gap: 0.5rem; flex-wrap: wrap;"><button class="news-cat active-cat" data-cat="hn" style="padding: 0.5rem 1rem; background: rgba(168, 85, 247, 0.3); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">Tech</button><button class="news-cat" data-cat="india" style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">🇮🇳 India</button><button class="news-cat" data-cat="world" style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">World</button></div><button class="refresh-news-btn" style="padding: 0.5rem; background: rgba(6, 182, 127, 0.3); border: 1px solid rgba(6, 182, 127, 0.5); border-radius: 8px; color: #fff; cursor: pointer;"><i class="fas fa-sync-alt"></i></button></div><div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;"><span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display:inline-block;"></span>Live feed</div><div class="news-container"></div>',
                 init: async function(widget) {
                     if (!widget) return;
-                    
                     const container = widget.querySelector('.news-container');
                     const refreshBtn = widget.querySelector('.refresh-news-btn');
-                    let currentCat = 'technology';
-                    
+                    let currentCat = 'hn';
+
                     const gradients = [
                         'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                         'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
@@ -728,87 +909,123 @@
                         'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
                         'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
                     ];
-                    
-                    async function loadNews() {
-                        container.innerHTML = '<div style="padding: 2rem; text-align: center; color: rgba(255, 255, 255, 0.5);"><i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i><div style="margin-top: 1rem;">Loading fresh news...</div></div>';
+
+                    const rssFeeds = {
+                        india: [
+                            { url: 'https://feeds.feedburner.com/ndtvnews-top-stories', name: 'NDTV' },
+                            { url: 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms', name: 'Times of India' }
+                        ],
+                        world: [
+                            { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World' },
+                            { url: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml', name: 'NYT World' }
+                        ]
+                    };
+
+                    function buildNewsItem(title, url, source, thumbnail, timeStr, gradient, i) {
+                        const item = document.createElement('div');
+                        item.style.cssText = 'display:flex;align-items:stretch;margin-bottom:0.75rem;border-radius:12px;overflow:hidden;background:rgba(0,0,0,0.4);cursor:pointer;transition:all 0.3s;border:1px solid rgba(255,255,255,0.1);';
+                        const thumb = '<div style="width:120px;min-width:120px;height:90px;background:' + gradient + ';position:relative;overflow:hidden;flex-shrink:0;">'
+                            + (thumbnail ? '<img src="' + thumbnail + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'">' : '')
+                            + '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">'
+                            + '<i class="fas fa-newspaper" style="font-size:1.5rem;opacity:0.4;"></i></div></div>';
+                        const text = '<div style="padding:0.7rem 0.85rem;display:flex;flex-direction:column;justify-content:center;gap:0.3rem;flex:1;min-width:0;">'
+                            + '<div style="font-size:0.88rem;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + title + '</div>'
+                            + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;gap:0.5rem;flex-wrap:wrap;">'
+                            + '<span style="color:rgba(168,85,247,0.9);">' + source + '</span>'
+                            + (timeStr ? '<span>•</span><span>' + timeStr + '</span>' : '')
+                            + '</div></div>';
+                        item.innerHTML = thumb + text;
+                        item.onmouseenter = () => { item.style.transform = 'translateX(4px)'; item.style.borderColor = 'rgba(168,85,247,0.5)'; };
+                        item.onmouseleave = () => { item.style.transform = 'translateX(0)'; item.style.borderColor = 'rgba(255,255,255,0.1)'; };
+                        item.onclick = () => window.open(url, '_blank');
+                        return item;
+                    }
+
+                    async function loadHN() {
+                        container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(255,255,255,0.5);"><i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i><div style="margin-top:1rem;">Loading...</div></div>';
                         try {
                             const res = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json?t=' + Date.now());
                             const ids = await res.json();
                             container.innerHTML = '';
-                            
                             for (let i = 0; i < 6; i++) {
                                 const itemRes = await fetch('https://hacker-news.firebaseio.com/v0/item/' + ids[i] + '.json');
                                 const item = await itemRes.json();
-                                
-                                const newsItem = document.createElement('div');
-                                newsItem.style.cssText = 'display: flex; align-items: stretch; gap: 0; margin-bottom: 0.75rem; border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.4); cursor: pointer; transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1); max-width: 860px;';
-                                
                                 const timeAgo = Math.floor((Date.now() / 1000 - item.time) / 60);
                                 const timeStr = timeAgo < 60 ? timeAgo + 'm ago' : Math.floor(timeAgo / 60) + 'h ago';
-                                const gradient = gradients[i % gradients.length];
-                                
                                 let domain = '';
-                                let ogImageUrl = '';
+                                let faviconUrl = '';
                                 if (item.url) {
                                     try {
                                         domain = new URL(item.url).hostname.replace('www.', '');
-                                        // Use microlink for real OG images — reliable and free
-                                        ogImageUrl = 'https://api.microlink.io/?url=' + encodeURIComponent(item.url) + '&screenshot=false&meta=false&embed=image.url';
+                                        faviconUrl = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
                                     } catch(e) {}
                                 }
-
-                                const fallbackGradient = gradient.replace(/'/g, "\\'");
-                                const thumbnailHtml = '<div style="width: 160px; min-width: 160px; height: 120px; background: ' + gradient + '; position: relative; overflow: hidden; flex-shrink: 0;">'
-                                    + (ogImageUrl ? '<img src="' + ogImageUrl + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display=\'none\'">' : '')
-                                    + '<div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 0;">'
-                                    + (domain ? '<img src="https://favicon.im/' + domain + '?larger=true" style="width: 48px; height: 48px; object-fit: contain; opacity: 0.85; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));" onerror="this.style.display=\'none\'">' : '<i class="fas fa-newspaper" style="font-size: 2rem; opacity: 0.5;"></i>')
+                                // Build item with favicon-based thumbnail
+                                const grad = gradients[i % gradients.length];
+                                const el = document.createElement('div');
+                                el.style.cssText = 'display:flex;align-items:stretch;margin-bottom:0.75rem;border-radius:12px;overflow:hidden;background:rgba(0,0,0,0.4);cursor:pointer;transition:all 0.3s;border:1px solid rgba(255,255,255,0.1);';
+                                el.innerHTML = '<div style="width:120px;min-width:120px;height:90px;background:' + grad + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">'
+                                    + (faviconUrl ? '<img src="' + faviconUrl + '" style="width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.6));" onerror="this.style.display=\'none\'">' : '')
                                     + '</div>'
-                                    + '</div>';
-
-                                const textHtml = '<div style="padding: 0.85rem 1rem; display: flex; flex-direction: column; justify-content: center; gap: 0.4rem; flex: 1; min-width: 0;">'
-                                    + '<div style="font-size: 0.95rem; font-weight: 600; line-height: 1.35; color: #fff; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">' + item.title + '</div>'
-                                    + '<div style="font-size: 0.72rem; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">'
-                                    + (domain ? '<span style="color: rgba(168,85,247,0.9);">' + domain + '</span><span>•</span>' : '')
-                                    + '<span><i class="fas fa-user" style="font-size: 0.65rem; margin-right: 0.25rem;"></i>' + (item.by || 'Anonymous') + '</span>'
-                                    + '<span>•</span>'
-                                    + '<span style="color: #10b981;"><i class="fas fa-arrow-up" style="font-size: 0.65rem; margin-right: 0.2rem;"></i>' + (item.score || 0) + '</span>'
+                                    + '<div style="padding:0.7rem 0.85rem;display:flex;flex-direction:column;justify-content:center;gap:0.3rem;flex:1;min-width:0;">'
+                                    + '<div style="font-size:0.88rem;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + item.title + '</div>'
+                                    + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;gap:0.5rem;flex-wrap:wrap;">'
+                                    + (domain ? '<span style="color:rgba(168,85,247,0.9);">' + domain + '</span><span>•</span>' : '')
+                                    + '<span style="color:#10b981;"><i class="fas fa-arrow-up" style="font-size:0.6rem;margin-right:2px;"></i>' + (item.score||0) + '</span>'
                                     + '<span>•</span><span>' + timeStr + '</span>'
-                                    + '</div>'
-                                    + '</div>';
-
-                                newsItem.innerHTML = thumbnailHtml + textHtml;
-                                
-                                newsItem.onmouseenter = () => { 
-                                    newsItem.style.transform = 'translateX(4px)'; 
-                                    newsItem.style.boxShadow = '0 4px 20px rgba(168, 85, 247, 0.25)'; 
-                                    newsItem.style.borderColor = 'rgba(168, 85, 247, 0.5)'; 
-                                };
-                                newsItem.onmouseleave = () => { 
-                                    newsItem.style.transform = 'translateX(0)'; 
-                                    newsItem.style.boxShadow = 'none'; 
-                                    newsItem.style.borderColor = 'rgba(255, 255, 255, 0.1)'; 
-                                };
-                                newsItem.onclick = () => window.open(item.url || 'https://news.ycombinator.com/item?id=' + item.id, '_blank');
-                                container.appendChild(newsItem);
+                                    + '</div></div>';
+                                el.onmouseenter = () => { el.style.transform = 'translateX(4px)'; el.style.borderColor = 'rgba(168,85,247,0.5)'; };
+                                el.onmouseleave = () => { el.style.transform = 'translateX(0)'; el.style.borderColor = 'rgba(255,255,255,0.1)'; };
+                                el.onclick = () => window.open(item.url || 'https://news.ycombinator.com/item?id=' + item.id, '_blank');
+                                container.appendChild(el);
                             }
-                        } catch (err) {
-                            container.innerHTML = '<div style="padding: 2rem; text-align: center; color: #ef4444;"><i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i><div>Failed to load news</div></div>';
+                        } catch(err) {
+                            container.innerHTML = '<div style="padding:2rem;text-align:center;color:#ef4444;">Failed to load</div>';
                         }
                     }
-                    
+
+                    async function loadRSS(cat) {
+                        container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(255,255,255,0.5);"><i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i><div style="margin-top:1rem;">Loading...</div></div>';
+                        const feeds = rssFeeds[cat];
+                        const proxy = 'https://api.rss2json.com/v1/api.json?rss_url=';
+                        try {
+                            const results = await Promise.all(feeds.map(f => fetch(proxy + encodeURIComponent(f.url)).then(r => r.json()).catch(() => null)));
+                            container.innerHTML = '';
+                            let count = 0;
+                            for (let fi = 0; fi < results.length; fi++) {
+                                const result = results[fi];
+                                if (!result || !result.items) continue;
+                                for (const item of result.items.slice(0, 4)) {
+                                    if (count >= 6) break;
+                                    const thumb = item.thumbnail || item.enclosure?.link || '';
+                                    const source = feeds[fi].name;
+                                    const pubDate = item.pubDate ? new Date(item.pubDate) : null;
+                                    const timeStr = pubDate ? Math.floor((Date.now() - pubDate) / 60000) + 'm ago' : '';
+                                    container.appendChild(buildNewsItem(item.title, item.link, source, thumb, timeStr, gradients[count % gradients.length], count));
+                                    count++;
+                                }
+                            }
+                            if (count === 0) container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(255,255,255,0.5);">No articles found</div>';
+                        } catch(err) {
+                            container.innerHTML = '<div style="padding:2rem;text-align:center;color:#ef4444;">Failed to load</div>';
+                        }
+                    }
+
+                    function loadNews() {
+                        if (currentCat === 'hn') loadHN();
+                        else loadRSS(currentCat);
+                    }
+
                     widget.querySelectorAll('.news-cat').forEach(btn => {
                         btn.addEventListener('click', function() {
-                            widget.querySelectorAll('.news-cat').forEach(b => {
-                                b.style.background = 'rgba(255, 255, 255, 0.1)';
-                                b.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                            });
-                            this.style.background = 'rgba(168, 85, 247, 0.3)';
-                            this.style.borderColor = 'rgba(168, 85, 247, 0.5)';
+                            widget.querySelectorAll('.news-cat').forEach(b => { b.style.background = 'rgba(255,255,255,0.1)'; b.style.borderColor = 'rgba(255,255,255,0.2)'; });
+                            this.style.background = 'rgba(168,85,247,0.3)';
+                            this.style.borderColor = 'rgba(168,85,247,0.5)';
                             currentCat = this.getAttribute('data-cat');
                             loadNews();
                         });
                     });
-                    
+
                     if (refreshBtn) refreshBtn.addEventListener('click', loadNews);
                     loadNews();
                     setInterval(loadNews, 300000);
@@ -897,7 +1114,7 @@
         };
 
         // Widget Management
-        const defaultPages = { dashboard: ['links', 'news'], intel: ['news'], vibes: ['meme', 'youtube'] };
+        const defaultPages = { dashboard: ['news'], intel: [], vibes: ['meme', 'youtube'] };
         let currentPage = localStorage.getItem('currentPage') || 'dashboard';
         let widgets = JSON.parse(localStorage.getItem('widgets_' + currentPage)) || defaultPages[currentPage] || [];
         
@@ -918,7 +1135,19 @@
         
         function renderWidgets() {
             const grid = document.getElementById('widget-grid');
+            const intelPage = document.getElementById('intel-page');
             grid.innerHTML = '';
+
+            if (currentPage === 'intel') {
+                grid.style.display = 'none';
+                intelPage.style.display = 'flex';
+                initIntelPage();
+                return;
+            }
+
+            grid.style.display = 'grid';
+            intelPage.style.display = 'none';
+
             widgets.forEach(type => {
                 const widget = createWidget(type);
                 if (widget) {
@@ -938,7 +1167,187 @@
                 }
             });
         }
-        
+
+        // Intel Page
+        let intelCat = 'all';
+        let intelInitialized = false;
+
+        const intelGradients = [
+            'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+            'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+            'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
+            'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+            'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+        ];
+
+        const intelFeeds = {
+            india: [
+                { url: 'https://feeds.feedburner.com/ndtvnews-top-stories', name: 'NDTV' },
+                { url: 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms', name: 'Times of India' }
+            ],
+            world: [
+                { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World' },
+                { url: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml', name: 'NYT World' }
+            ]
+        };
+
+        function buildIntelCard(title, url, source, thumb, timeStr, gradient) {
+            const card = document.createElement('div');
+            card.style.cssText = 'display:flex;align-items:stretch;border-radius:14px;overflow:hidden;background:rgba(0,0,0,0.45);cursor:pointer;transition:all 0.25s;border:1px solid rgba(255,255,255,0.08);';
+            card.innerHTML = '<div style="width:130px;min-width:130px;height:100px;background:' + gradient + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;overflow:hidden;">'
+                + (thumb ? '<img src="' + thumb + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'">' : '')
+                + '</div>'
+                + '<div style="padding:0.8rem 1rem;display:flex;flex-direction:column;justify-content:center;gap:0.35rem;flex:1;min-width:0;">'
+                + '<div style="font-size:0.9rem;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 4px rgba(0,0,0,0.8);">' + title + '</div>'
+                + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;gap:0.5rem;flex-wrap:wrap;">'
+                + '<span style="color:rgba(168,85,247,0.9);">' + source + '</span>'
+                + (timeStr ? '<span>•</span><span>' + timeStr + '</span>' : '')
+                + '</div></div>';
+            card.onmouseenter = () => { card.style.transform = 'translateY(-2px)'; card.style.borderColor = 'rgba(168,85,247,0.4)'; card.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)'; };
+            card.onmouseleave = () => { card.style.transform = 'translateY(0)'; card.style.borderColor = 'rgba(255,255,255,0.08)'; card.style.boxShadow = 'none'; };
+            card.onclick = () => window.open(url, '_blank');
+            return card;
+        }
+
+        async function loadIntelNews() {
+            const container = document.getElementById('intel-articles');
+            container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:rgba(255,255,255,0.5);"><i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i><div style="margin-top:1rem;">Loading...</div></div>';
+
+            if (intelCat === 'all') {
+                try {
+                    // Fetch HN + all RSS feeds in parallel
+                    const hnPromise = fetch('https://hacker-news.firebaseio.com/v0/topstories.json?t=' + Date.now()).then(r => r.json());
+                    const rssPromises = [...intelFeeds.india, ...intelFeeds.world].map(f =>
+                        fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(f.url)).then(r => r.json()).then(d => ({ data: d, name: f.name })).catch(() => null)
+                    );
+                    const [hnIds, ...rssResults] = await Promise.all([hnPromise, ...rssPromises]);
+
+                    const allCards = [];
+
+                    // 4 HN items
+                    for (let i = 0; i < 4; i++) {
+                        const item = await fetch('https://hacker-news.firebaseio.com/v0/item/' + hnIds[i] + '.json').then(r => r.json());
+                        const timeAgo = Math.floor((Date.now() / 1000 - item.time) / 60);
+                        const timeStr = timeAgo < 60 ? timeAgo + 'm ago' : Math.floor(timeAgo / 60) + 'h ago';
+                        let domain = '', favicon = '';
+                        if (item.url) { try { domain = new URL(item.url).hostname.replace('www.', ''); favicon = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64'; } catch(e) {} }
+                        const grad = intelGradients[allCards.length % intelGradients.length];
+                        const card = document.createElement('div');
+                        card.style.cssText = 'display:flex;align-items:stretch;border-radius:14px;overflow:hidden;background:rgba(0,0,0,0.45);cursor:pointer;transition:all 0.25s;border:1px solid rgba(255,255,255,0.08);';
+                        card.innerHTML = '<div style="width:130px;min-width:130px;height:100px;background:' + grad + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">'
+                            + (favicon ? '<img src="' + favicon + '" style="width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5));" onerror="this.style.display=\'none\'">' : '')
+                            + '</div><div style="padding:0.8rem 1rem;display:flex;flex-direction:column;justify-content:center;gap:0.35rem;flex:1;min-width:0;">'
+                            + '<div style="font-size:0.9rem;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 4px rgba(0,0,0,0.8);">' + item.title + '</div>'
+                            + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;gap:0.5rem;flex-wrap:wrap;">'
+                            + (domain ? '<span style="color:rgba(168,85,247,0.9);">' + domain + '</span><span>•</span>' : '')
+                            + '<span style="color:#10b981;"><i class="fas fa-arrow-up" style="font-size:0.6rem;margin-right:2px;"></i>' + (item.score||0) + '</span>'
+                            + '<span>•</span><span>' + timeStr + '</span></div></div>';
+                        card.onmouseenter = () => { card.style.transform = 'translateY(-2px)'; card.style.borderColor = 'rgba(168,85,247,0.4)'; card.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)'; };
+                        card.onmouseleave = () => { card.style.transform = 'translateY(0)'; card.style.borderColor = 'rgba(255,255,255,0.08)'; card.style.boxShadow = 'none'; };
+                        card.onclick = () => window.open(item.url || 'https://news.ycombinator.com/item?id=' + item.id, '_blank');
+                        allCards.push(card);
+                    }
+
+                    // 2-3 items from each RSS feed
+                    for (const result of rssResults) {
+                        if (!result || !result.data || !result.data.items) continue;
+                        for (const item of result.data.items.slice(0, 3)) {
+                            const thumb = item.thumbnail || item.enclosure?.link || '';
+                            const pubDate = item.pubDate ? new Date(item.pubDate) : null;
+                            const timeStr = pubDate ? Math.floor((Date.now() - pubDate) / 60000) + 'm ago' : '';
+                            allCards.push(buildIntelCard(item.title, item.link, result.name, thumb, timeStr, intelGradients[allCards.length % intelGradients.length]));
+                        }
+                    }
+
+                    // Shuffle so it's mixed
+                    allCards.sort(() => Math.random() - 0.5);
+                    container.innerHTML = '';
+                    allCards.forEach(c => container.appendChild(c));
+                } catch(e) {
+                    container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:#ef4444;">Failed to load</div>';
+                }
+                return;
+            }
+
+            if (intelCat === 'hn') {
+                try {
+                    const res = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json?t=' + Date.now());
+                    const ids = await res.json();
+                    container.innerHTML = '';
+                    for (let i = 0; i < 12; i++) {
+                        const itemRes = await fetch('https://hacker-news.firebaseio.com/v0/item/' + ids[i] + '.json');
+                        const item = await itemRes.json();
+                        const timeAgo = Math.floor((Date.now() / 1000 - item.time) / 60);
+                        const timeStr = timeAgo < 60 ? timeAgo + 'm ago' : Math.floor(timeAgo / 60) + 'h ago';
+                        let domain = '', favicon = '';
+                        if (item.url) {
+                            try { domain = new URL(item.url).hostname.replace('www.', ''); favicon = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64'; } catch(e) {}
+                        }
+                        const grad = intelGradients[i % intelGradients.length];
+                        const card = document.createElement('div');
+                        card.style.cssText = 'display:flex;align-items:stretch;border-radius:14px;overflow:hidden;background:rgba(0,0,0,0.45);cursor:pointer;transition:all 0.25s;border:1px solid rgba(255,255,255,0.08);';
+                        card.innerHTML = '<div style="width:130px;min-width:130px;height:100px;background:' + grad + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">'
+                            + (favicon ? '<img src="' + favicon + '" style="width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5));" onerror="this.style.display=\'none\'">' : '')
+                            + '</div>'
+                            + '<div style="padding:0.8rem 1rem;display:flex;flex-direction:column;justify-content:center;gap:0.35rem;flex:1;min-width:0;">'
+                            + '<div style="font-size:0.9rem;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 4px rgba(0,0,0,0.8);">' + item.title + '</div>'
+                            + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;gap:0.5rem;flex-wrap:wrap;">'
+                            + (domain ? '<span style="color:rgba(168,85,247,0.9);">' + domain + '</span><span>•</span>' : '')
+                            + '<span style="color:#10b981;"><i class="fas fa-arrow-up" style="font-size:0.6rem;margin-right:2px;"></i>' + (item.score||0) + '</span>'
+                            + '<span>•</span><span>' + timeStr + '</span>'
+                            + '</div></div>';
+                        card.onmouseenter = () => { card.style.transform = 'translateY(-2px)'; card.style.borderColor = 'rgba(168,85,247,0.4)'; card.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)'; };
+                        card.onmouseleave = () => { card.style.transform = 'translateY(0)'; card.style.borderColor = 'rgba(255,255,255,0.08)'; card.style.boxShadow = 'none'; };
+                        card.onclick = () => window.open(item.url || 'https://news.ycombinator.com/item?id=' + item.id, '_blank');
+                        container.appendChild(card);
+                    }
+                } catch(e) {
+                    container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:#ef4444;">Failed to load</div>';
+                }
+            } else {
+                const feeds = intelFeeds[intelCat];
+                try {
+                    const results = await Promise.all(feeds.map(f => fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(f.url)).then(r => r.json()).catch(() => null)));
+                    container.innerHTML = '';
+                    let count = 0;
+                    for (let fi = 0; fi < results.length; fi++) {
+                        const result = results[fi];
+                        if (!result || !result.items) continue;
+                        for (const item of result.items.slice(0, 8)) {
+                            const thumb = item.thumbnail || item.enclosure?.link || '';
+                            const pubDate = item.pubDate ? new Date(item.pubDate) : null;
+                            const timeStr = pubDate ? Math.floor((Date.now() - pubDate) / 60000) + 'm ago' : '';
+                            container.appendChild(buildIntelCard(item.title, item.link, feeds[fi].name, thumb, timeStr, intelGradients[count % intelGradients.length]));
+                            count++;
+                        }
+                    }
+                    if (count === 0) container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:rgba(255,255,255,0.5);">No articles found</div>';
+                } catch(e) {
+                    container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:#ef4444;">Failed to load</div>';
+                }
+            }
+        }
+
+        function initIntelPage() {
+            if (!intelInitialized) {
+                document.querySelectorAll('.intel-cat').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('.intel-cat').forEach(b => { b.style.background = 'rgba(255,255,255,0.08)'; b.style.borderColor = 'rgba(255,255,255,0.15)'; });
+                        this.style.background = 'rgba(168,85,247,0.3)';
+                        this.style.borderColor = 'rgba(168,85,247,0.5)';
+                        intelCat = this.getAttribute('data-cat');
+                        loadIntelNews();
+                    });
+                });
+                document.getElementById('intel-refresh').addEventListener('click', loadIntelNews);
+                intelInitialized = true;
+            }
+            loadIntelNews();
+        }
+
         renderWidgets();
         
         document.getElementById('add-widget').addEventListener('click', () => {
@@ -1028,6 +1437,65 @@
         }
         updateNavWeather();
         setInterval(updateNavWeather, 600000);
+
+        // Quick Links Panel
+        const qlDefaults = [
+            { url: 'https://github.com', name: 'GitHub', icon: 'fab fa-github', color: '#fff' },
+            { url: 'https://x.com', name: 'X', icon: 'fab fa-x-twitter', color: '#1DA1F2' },
+            { url: 'https://youtube.com', name: 'YouTube', icon: 'fab fa-youtube', color: '#FF0000' },
+            { url: 'https://reddit.com', name: 'Reddit', icon: 'fab fa-reddit', color: '#FF4500' },
+            { url: 'https://discord.com', name: 'Discord', icon: 'fab fa-discord', color: '#5865F2' },
+            { url: 'https://gmail.com', name: 'Gmail', icon: 'fas fa-envelope', color: '#EA4335' },
+            { url: 'https://notion.so', name: 'Notion', icon: 'fas fa-book', color: '#fff' },
+            { url: 'https://spotify.com', name: 'Spotify', icon: 'fab fa-spotify', color: '#1DB954' },
+        ];
+        let qlLinks = JSON.parse(localStorage.getItem('quickLinks')) || qlDefaults;
+        const qlPanel = document.getElementById('quick-links-panel');
+        const qlGrid = document.getElementById('ql-grid');
+        const qlBtn = document.getElementById('quick-links-btn');
+        const qlAddBtn = document.getElementById('ql-add');
+
+        function renderQL() {
+            qlGrid.innerHTML = '';
+            qlLinks.forEach((link, i) => {
+                const item = document.createElement('a');
+                item.href = link.url;
+                item.target = '_blank';
+                item.className = 'ql-item';
+                item.innerHTML = `
+                    <div class="ql-icon"><i class="${link.icon}" style="font-size:1.4rem;color:${link.color};"></i></div>
+                    <span class="ql-name">${link.name}</span>
+                    <button class="ql-delete" data-i="${i}">×</button>`;
+                item.querySelector('.ql-delete').addEventListener('click', (e) => {
+                    e.preventDefault(); e.stopPropagation();
+                    qlLinks.splice(i, 1);
+                    localStorage.setItem('quickLinks', JSON.stringify(qlLinks));
+                    renderQL();
+                });
+                qlGrid.appendChild(item);
+            });
+        }
+        renderQL();
+
+        qlBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            qlPanel.classList.toggle('open');
+        });
+        qlAddBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const url = prompt('Enter URL:'); if (!url) return;
+            const name = prompt('Enter name:'); if (!name) return;
+            const icon = prompt('Font Awesome icon class (e.g. fab fa-github):') || 'fas fa-link';
+            const color = prompt('Icon color (e.g. #FF0000):') || '#fff';
+            qlLinks.push({ url, name, icon, color });
+            localStorage.setItem('quickLinks', JSON.stringify(qlLinks));
+            renderQL();
+        });
+        document.addEventListener('click', (e) => {
+            if (!qlPanel.contains(e.target) && e.target !== qlBtn) {
+                qlPanel.classList.remove('open');
+            }
+        });
     </script>
 </body>
 </html>
