@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RANVER // Cosmic Command</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body, html {
+            width: 100vw; height: 100vh;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #fff;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #bg {
+            position: fixed; inset: 0;
+            background-size: cover; background-position: center;
+            filter: brightness(0.5) contrast(1.1);
+            z-index: 0;
+            transition: opacity 0.5s;
+        }
+
+        #starfield {
+            position: fixed; inset: 0;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative; z-index: 10;
+            width: 100%; height: 100vh;
+            display: flex; flex-direction: column;
+        }
+
+        .glass {
+            background: rgba(10, 10, 25, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .glitch {
+            animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        .header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            padding: 0 2rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab:hover { background: rgba(168, 85, 247, 0.2); }
+        .tab.active { background: rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.5); }
+
+        .search-section {
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.5rem 6rem 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(168, 85, 247, 0.3);
+            border-radius: 50px;
+            color: #fff;
+            font-size: 1.2rem;

@@ -1,0 +1,1033 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">RANVER // Cosmic Command</title>
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/a/ACg8ocIYTUOOI0seIZCpBvZXe6sfowTylNOSgYVUx-bGXfN9T0p3i5BI=s360-c-no">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { width: 100vw; height: 100vh; font-family: 'Space Grotesk', sans-serif; color: #fff; overflow: hidden; background: #000; }
+        #bg { position: fixed; inset: 0; background-size: cover; background-position: center; filter: brightness(0.85); z-index: 0; transition: filter 600ms ease; }
+        #starfield { position: fixed; inset: 0; z-index: 1; }
+
+        /* Ambient orbs */
+        .orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.18; z-index: 2; pointer-events: none; animation: orbFloat 12s ease-in-out infinite; }
+        .orb-1 { width: 400px; height: 400px; background: #a855f7; top: -100px; left: -100px; animation-duration: 14s; }
+        .orb-2 { width: 300px; height: 300px; background: #06b6d4; bottom: -80px; right: -80px; animation-duration: 18s; animation-delay: -6s; }
+        .orb-3 { width: 250px; height: 250px; background: #ec4899; top: 40%; left: 60%; animation-duration: 22s; animation-delay: -10s; }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -30px) scale(1.08); }
+            66% { transform: translate(-20px, 40px) scale(0.95); }
+        }
+
+        /* Scan line */
+        .scanline { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, rgba(168,85,247,0.6), transparent); z-index: 3; pointer-events: none; animation: scan 8s linear infinite; opacity: 0.5; }
+        @keyframes scan { 0% { top: -4px; } 100% { top: 100vh; } }
+
+        /* Corner brackets */
+        .corner { position: fixed; width: 40px; height: 40px; z-index: 3; pointer-events: none; opacity: 0.4; }
+        .corner-tl { top: 12px; left: 12px; border-top: 2px solid #a855f7; border-left: 2px solid #a855f7; }
+        .corner-tr { top: 12px; right: 12px; border-top: 2px solid #a855f7; border-right: 2px solid #a855f7; }
+        .corner-bl { bottom: 12px; left: 12px; border-bottom: 2px solid #a855f7; border-left: 2px solid #a855f7; }
+        .corner-br { bottom: 12px; right: 12px; border-bottom: 2px solid #a855f7; border-right: 2px solid #a855f7; }
+
+        .container { position: relative; z-index: 10; width: 100%; height: 100vh; display: flex; flex-direction: column; background: transparent; }
+        .glass { background: rgba(10, 10, 25, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
+        .header { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; background: transparent; }
+        .tabs { display: flex; gap: 1rem; padding: 0 2rem; }
+        .tab { padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .tab:hover { background: rgba(168, 85, 247, 0.2); }
+        .tab.active { background: rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.5); animation: tabPulse 3s ease-in-out infinite; }
+        @keyframes tabPulse { 0%,100% { box-shadow: 0 0 0 rgba(168,85,247,0); } 50% { box-shadow: 0 0 12px rgba(168,85,247,0.4); } }
+        .search-section { padding: 2rem; display: flex; justify-content: center; }
+        .search-box { width: 100%; max-width: 800px; position: relative; }
+        .search-input { width: 100%; padding: 1.5rem 6rem 1.5rem 2rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 50px; color: #fff; font-size: 1.2rem; transition: all 0.3s; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); }
+        .search-input:focus { outline: none; border-color: rgba(168, 85, 247, 0.8); box-shadow: 0 0 30px rgba(168, 85, 247, 0.4); }
+        .search-controls { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); display: flex; gap: 0.5rem; }
+        .search-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(168, 85, 247, 0.3); border: 1px solid rgba(168, 85, 247, 0.5); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: #fff; }
+        .search-btn:hover { background: rgba(168, 85, 247, 0.5); transform: scale(1.1); }
+        .widget-grid { flex: 1; padding: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; overflow-y: auto; }
+        .widget { background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 1.5rem; cursor: move; transition: all 0.3s; display: flex; flex-direction: column; max-height: 500px; animation: widgetIn 0.4s ease both; box-shadow: 0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08); }
+        @keyframes widgetIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        .widget:hover { border-color: rgba(168, 85, 247, 0.6); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(168,85,247,0.2), inset 0 1px 0 rgba(255,255,255,0.12); }
+        .widget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+        .widget-title { font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.9rem; }
+        .widget-close { cursor: pointer; opacity: 0.5; transition: opacity 0.2s; }
+        .widget-close:hover { opacity: 1; color: #ef4444; }
+        .widget-content { overflow-y: auto; flex: 1; }
+        .widget-content::-webkit-scrollbar { width: 6px; }
+        .widget-content::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        .widget-content::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.5); border-radius: 3px; }
+        .clock-display { font-size: 3rem; font-weight: 300; text-align: center; text-shadow: 0 0 20px rgba(168, 85, 247, 0.6); }
+        .news-item { padding: 0.75rem; background: rgba(255,255,255,0.04); border-radius: 8px; margin-bottom: 0.75rem; border-left: 3px solid rgba(168, 85, 247, 0.5); cursor: pointer; transition: all 0.2s; }
+        .news-item:hover { background: rgba(168, 85, 247, 0.15); transform: translateX(5px); }
+        .link-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+        .link-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; text-decoration: none; color: #fff; transition: all 0.2s; padding: 0.55rem 0.4rem; backdrop-filter: blur(10px); }
+        .link-item:hover { background: rgba(168, 85, 247, 0.2); transform: translateY(-3px); }
+        .warp-btn { position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #ec4899); border: none; color: #fff; font-size: 1.5rem; cursor: pointer; box-shadow: 0 0 30px rgba(168, 85, 247, 0.6); transition: all 0.3s; z-index: 100; animation: warpPulse 4s ease-in-out infinite; }
+        @keyframes warpPulse { 0%,100% { box-shadow: 0 0 30px rgba(168,85,247,0.6); } 50% { box-shadow: 0 0 50px rgba(168,85,247,0.9), 0 0 80px rgba(236,72,153,0.4); } }
+        .warp-btn:hover { transform: rotate(180deg) scale(1.1); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.5); border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div id="bg"></div>
+    <canvas id="starfield"></canvas>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="scanline"></div>
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="container">
+        <div class="header">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <img id="profile-pic" src="https://ui-avatars.com/api/?name=RANVER&background=a855f7&color=fff&size=64" alt="Profile" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(168, 85, 247, 0.5); cursor: pointer;" title="Click to change profile picture">
+                <div>
+                    <div style="font-size: 1.5rem; font-weight: 700; text-shadow: 0 0 20px rgba(168, 85, 247, 0.8);">RANVER</div>
+                    <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); letter-spacing: 0.2em;">COSMIC COMMAND</div>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 2rem;">
+                <div style="display: flex; align-items: center; gap: 1.5rem; padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.05); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);">
+                    <svg width="80" height="80" viewBox="0 0 100 100" id="nav-analog-clock">
+                        <circle cx="50" cy="50" r="48" fill="rgba(0,0,0,0.3)" stroke="rgba(168, 85, 247, 0.5)" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="3" fill="#a855f7"/>
+                        <line id="nav-hour-hand" x1="50" y1="50" x2="50" y2="30" stroke="#a855f7" stroke-width="4" stroke-linecap="round"/>
+                        <line id="nav-minute-hand" x1="50" y1="50" x2="50" y2="20" stroke="#06b6d4" stroke-width="3" stroke-linecap="round"/>
+                        <line id="nav-second-hand" x1="50" y1="50" x2="50" y2="15" stroke="#ec4899" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <div style="text-align: left;">
+                        <div style="font-size: 1.2rem; font-weight: 600; color: #a855f7;" id="nav-time">00:00</div>
+                        <div style="font-size: 0.7rem; color: rgba(255, 255, 255, 0.5);" id="nav-date">Loading...</div>
+                    </div>
+                    <div style="width: 1px; height: 60px; background: rgba(255, 255, 255, 0.1);"></div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem;" id="nav-weather-icon">☀️</div>
+                        <div style="font-size: 1.2rem; font-weight: 600;" id="nav-weather-temp">--°</div>
+                    </div>
+                </div>
+                <button id="refresh-bg" class="search-btn" title="New Background"><i class="fas fa-sync-alt"></i></button>
+                <button id="add-widget" class="search-btn" title="Add Widget"><i class="fas fa-plus"></i></button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-page="dashboard"><i class="fas fa-th-large" style="margin-right: 0.5rem;"></i>Dashboard</div>
+            <div class="tab" data-page="intel"><i class="fas fa-newspaper" style="margin-right: 0.5rem;"></i>Intel Feed</div>
+            <div class="tab" data-page="vibes"><i class="fas fa-fire" style="margin-right: 0.5rem;"></i>Vibes</div>
+        </div>
+
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" target="_blank" placeholder="">
+                <div class="search-controls">
+                    <button class="search-btn" id="voice-search" title="Voice Search"><i class="fas fa-microphone"></i></button>
+                    <button class="search-btn" id="search-engine-toggle" title="Toggle Search Engine" data-engine="brave"><i class="fas fa-shield-alt"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="widget-grid" id="widget-grid"></div>
+    </div>
+
+    <button class="warp-btn" id="warp-btn" title="Shuffle Widgets"><i class="fas fa-random"></i></button>
+    <button id="zen-mode" class="search-btn" title="Zen Mode" style="position: fixed; top: 1.25rem; right: 1rem; z-index: 9999; width: 40px; height: 40px; border-radius: 50%; background: rgba(168,85,247,0.3); border: 1px solid rgba(168,85,247,0.5);"><i class="fas fa-eye"></i></button>
+
+    <script>
+        // Starfield
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const stars = [];
+        for (let i = 0; i < 2; i++) {
+            stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, radius: Math.random() * 2, speed: Math.random() * 0.005 + 0.002 });
+        }
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+                star.y += star.speed;
+                if (star.y > canvas.height) { star.y = 0; star.x = Math.random() * canvas.width; }
+            });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+        // Background
+        const backgrounds = [
+            // Space & Nebulas
+            'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=2560&q=80',
+            'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=2560&q=80',
+            'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f41?w=2560&q=80',
+            'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=2560&q=80',
+            'https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=2560&q=80',
+            'https://images.unsplash.com/photo-1543722530-d2c3201371e7?w=2560&q=80',
+            'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=2560&q=80',
+            'https://images.unsplash.com/photo-1520034475321-cbe63696469a?w=2560&q=80',
+            'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=2560&q=80',
+            'https://images.unsplash.com/photo-1608178398319-48f814d0750c?w=2560&q=80',
+            'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=2560&q=80',
+            'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=2560&q=80',
+            'https://images.unsplash.com/photo-1567416661576-659f9b8e5a5e?w=2560&q=80',
+            'https://images.unsplash.com/photo-1610296669228-602fa827fc1f?w=2560&q=80',
+            'https://images.unsplash.com/photo-1596495577886-d920f1fb7238?w=2560&q=80',
+            'https://images.unsplash.com/photo-1655720828018-edd2daec9349?w=2560&q=80',
+            'https://images.unsplash.com/photo-1484589065579-248aad0d8b13?w=2560&q=80',
+            'https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?w=2560&q=80',
+            'https://images.unsplash.com/photo-1581822261290-991b38693d1b?w=2560&q=80',
+            'https://images.unsplash.com/photo-1569429593410-b498b3fb3387?w=2560&q=80',
+            // Cityscapes & Neon
+            'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=2560&q=80',
+            'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=2560&q=80',
+            'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=2560&q=80',
+            'https://images.unsplash.com/photo-1555993539-1732b0258235?w=2560&q=80',
+            'https://images.unsplash.com/photo-1573455494060-c5595004fb6c?w=2560&q=80',
+            'https://images.unsplash.com/photo-1514565131-fce0801e6785?w=2560&q=80',
+            'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=2560&q=80',
+            'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=2560&q=80',
+            'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=2560&q=80',
+            'https://images.unsplash.com/photo-1444084316824-dc26d6657664?w=2560&q=80',
+            'https://images.unsplash.com/photo-1502899576159-f224dc2349fa?w=2560&q=80',
+            'https://images.unsplash.com/photo-1568515387631-8b650bbcdb90?w=2560&q=80',
+            'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=2560&q=80',
+            'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=2560&q=80',
+            'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=2560&q=80',
+            // Nature & Landscapes
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=2560&q=80',
+            'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=2560&q=80',
+            'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=2560&q=80',
+            'https://images.unsplash.com/photo-1439853949212-36589f9f4505?w=2560&q=80',
+            'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=2560&q=80',
+            'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=2560&q=80',
+            'https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=2560&q=80',
+            'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=2560&q=80',
+            'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=2560&q=80',
+            'https://images.unsplash.com/photo-1455156218388-5e61b526818b?w=2560&q=80',
+            'https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=2560&q=80',
+            'https://images.unsplash.com/photo-1510784722466-f2aa240c0b8d?w=2560&q=80',
+            'https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?w=2560&q=80',
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=2560&q=80',
+            'https://images.unsplash.com/photo-1448375240586-882707db888b?w=2560&q=80',
+            'https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=2560&q=80',
+            'https://images.unsplash.com/photo-1490682143684-14369e18dce8?w=2560&q=80',
+            'https://images.unsplash.com/photo-1505765050516-f72dcac9c60e?w=2560&q=80',
+            'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=2560&q=80',
+            'https://images.unsplash.com/photo-1520962922320-2038eebab146?w=2560&q=80',
+            // Abstract & Dark
+            'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=2560&q=80',
+            'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=2560&q=80',
+            'https://images.unsplash.com/photo-1604076913837-52ab5629fde9?w=2560&q=80',
+            'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=2560&q=80',
+            'https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=2560&q=80',
+            'https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=2560&q=80',
+            'https://images.unsplash.com/photo-1507908708918-778587c9e563?w=2560&q=80',
+            'https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?w=2560&q=80',
+            'https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?w=2560&q=80',
+            'https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?w=2560&q=80',
+            'https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?w=2560&q=80',
+            'https://images.unsplash.com/photo-1502691876148-a84978e59af8?w=2560&q=80',
+            'https://images.unsplash.com/photo-1617957718614-8c23f060c2d0?w=2560&q=80',
+            'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=2560&q=80',
+            'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=2560&q=80',
+            // Oceans & Water
+            'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=2560&q=80',
+            'https://images.unsplash.com/photo-1505459668311-8dfac7952bf0?w=2560&q=80',
+            'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?w=2560&q=80',
+            'https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?w=2560&q=80',
+            'https://images.unsplash.com/photo-1484291470158-b8f8d608850d?w=2560&q=80',
+            'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=2560&q=80',
+            'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=2560&q=80',
+            'https://images.unsplash.com/photo-1473177104440-ffee2f376098?w=2560&q=80',
+            'https://images.unsplash.com/photo-1491904768633-2b7e3e7fede5?w=2560&q=80',
+            'https://images.unsplash.com/photo-1468581264429-2548ef9eb732?w=2560&q=80',
+            // Mountains & Snow
+            'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=2560&q=80',
+            'https://images.unsplash.com/photo-1464278533981-50106e6176b1?w=2560&q=80',
+            'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=2560&q=80',
+            'https://images.unsplash.com/photo-1520208422220-d12a3c588e6c?w=2560&q=80',
+            'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=2560&q=80',
+            'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=2560&q=80',
+            'https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=2560&q=80',
+            'https://images.unsplash.com/photo-1455156218388-5e61b526818b?w=2560&q=80',
+            'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=2560&q=80',
+            'https://images.unsplash.com/photo-1476611338391-6f395a0dd82e?w=2560&q=80',
+            // Forests & Jungles
+            'https://images.unsplash.com/photo-1448375240586-882707db888b?w=2560&q=80',
+            'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=2560&q=80',
+            'https://images.unsplash.com/photo-1448630360428-65456885c650?w=2560&q=80',
+            'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=2560&q=80',
+            'https://images.unsplash.com/photo-1448375240586-882707db888b?w=2560&q=80',
+            'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=2560&q=80',
+            'https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?w=2560&q=80',
+            'https://images.unsplash.com/photo-1440342359743-84fcb8c21f21?w=2560&q=80',
+            'https://images.unsplash.com/photo-1448375240586-882707db888b?w=2560&q=80',
+            'https://images.unsplash.com/photo-1511497584788-876760111969?w=2560&q=80',
+            // Deserts & Dunes
+            'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=2560&q=80',
+            'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=2560&q=80',
+            'https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=2560&q=80',
+            'https://images.unsplash.com/photo-1518623489648-a173ef7824f3?w=2560&q=80',
+            'https://images.unsplash.com/photo-1547234935-80c7145ec969?w=2560&q=80',
+            // Aurora & Night Sky
+            'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=2560&q=80',
+            'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=2560&q=80',
+            'https://images.unsplash.com/photo-1504253163759-c23fccaebb55?w=2560&q=80',
+            'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=2560&q=80',
+            'https://images.unsplash.com/photo-1579033461380-adb47c3eb938?w=2560&q=80',
+            'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=2560&q=80',
+            'https://images.unsplash.com/photo-1494243762455-6f980ac2a6b6?w=2560&q=80',
+            'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=2560&q=80',
+            'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=2560&q=80',
+            'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=2560&q=80',
+            // Cyberpunk & Futuristic
+            'https://images.unsplash.com/photo-1518770660439-4636190af475?w=2560&q=80',
+            'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=2560&q=80',
+            'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=2560&q=80',
+            'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=2560&q=80',
+            'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=2560&q=80',
+            'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=2560&q=80',
+            'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=2560&q=80',
+            'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=2560&q=80',
+            'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=2560&q=80',
+            'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=2560&q=80',
+        ];
+        function setBackground() {
+            document.getElementById('bg').style.backgroundImage = 'url(' + backgrounds[Math.floor(Math.random() * backgrounds.length)] + ')';
+        }
+        setBackground();
+        document.getElementById('refresh-bg').addEventListener('click', () => {
+            const bg = document.getElementById('bg');
+            bg.style.opacity = '0';
+            setTimeout(() => { setBackground(); bg.style.opacity = '1'; }, 300);
+        });
+
+        // Search
+        // Typewriter placeholder
+        const placeholders = [
+            // Funny
+            "why is my code not working...",
+            "how to exit vim",
+            "am i a genius or just lucky",
+            "how to look busy at work",
+            "why do programmers prefer dark mode",
+            "can AI replace me pls say no",
+            "how to pretend you understand blockchain",
+            "google but make it cooler",
+            "why does my code work on my machine",
+            "how to center a div finally",
+            "is coffee a programming language",
+            "how many monitors is too many monitors",
+            "why is javascript like this",
+            "how to explain to my mom what i do",
+            "rubber duck debugging actually works??",
+            "how to survive a code review",
+            "why did i become a developer",
+            "stack overflow is down what do i do",
+            "how to look smart in meetings",
+            "git blame but make it not me",
+            "why is production always on fire",
+            "how to write a todo app for the 100th time",
+            "is it too late to become a farmer",
+            "how to fake confidence in a standup",
+            "why does dark mode feel like a personality",
+            "how to tell my manager it's not a bug it's a feature",
+            "what if i just deleted node_modules",
+            "how to gaslight yourself into thinking you're productive",
+            "why does every side project die at 80%",
+            "how to explain recursion without recursion",
+            // Serious
+            "best mechanical keyboards 2025",
+            "how to learn system design",
+            "best productivity setups",
+            "how to build a startup",
+            "linux vs windows for devs",
+            "how to get better at algorithms",
+            "best resources for learning rust",
+            "how to negotiate a salary",
+            "what is a monad",
+            "how to read a research paper",
+            "best books for software engineers",
+            "how to build in public",
+            "what is zero knowledge proof",
+            "how to contribute to open source",
+            "best terminal setup for developers",
+            "how to think like a senior engineer",
+            "what is eventual consistency",
+            "how to design a REST API properly",
+            "best way to learn vim",
+            "how to write clean code",
+            "what is the actor model",
+            "how to do a technical interview",
+            "best note taking apps for devs",
+            "how to build a second brain",
+            "what is a bloom filter",
+            "how to get into machine learning",
+            "best way to learn typescript",
+            "what is observability in software",
+            "how to write good documentation",
+            "what is a distributed system",
+            // Bangs
+            "!yt synthwave playlist",
+            "!gh microsoft vscode",
+            "!r r/unixporn",
+            "!mdn css grid",
+            "!w dark matter",
+            "!yt how to build a pc",
+            "!r r/programming",
+            "!yt lo-fi hip hop beats",
+            "!gh trending repositories",
+            "!mdn javascript promises",
+            "!yt fireship latest video",
+            "!r r/battlestations",
+            "!w fermi paradox",
+            "!yt 3blue1brown",
+            "!gh neovim",
+            "!r r/homelab",
+            "!mdn web apis",
+            "!yt theo t3",
+            "!gh torvalds linux",
+            "!r r/cscareerquestions",
+            "!yt prime reacts",
+            "!w von neumann architecture",
+            "!gh vercel",
+            "!r r/rust",
+            "!yt the primeagen",
+            "!mdn fetch api",
+            "!gh tailwindcss",
+            "!r r/webdev",
+            "!yt computerphile",
+            "!w turing machine",
+            // Cosmic vibes
+            "what is beyond the observable universe",
+            "are we alone in the cosmos",
+            "how big is a neutron star",
+            "time travel paradox explained",
+            "what happens inside a black hole",
+            "how old is the universe",
+            "what is dark energy",
+            "could we live on europa",
+            "what is the great filter theory",
+            "how fast is the speed of light really",
+            "what is the multiverse theory",
+            "could we terraform mars",
+            "what is a dyson sphere",
+            "how do stars die",
+            "what is the heat death of the universe",
+            "are there infinite universes",
+            "what is the simulation hypothesis",
+            "how does quantum entanglement work",
+            "what came before the big bang",
+            "is time travel theoretically possible",
+        ];
+
+        const searchInput = document.getElementById('search-input');
+        let typewriterTimeout = null;
+        let currentPhraseIndex = 0;
+
+        function typePhrase(phrase, i = 0) {
+            if (document.activeElement === searchInput) return;
+            if (i <= phrase.length) {
+                searchInput.placeholder = phrase.slice(0, i) + (i < phrase.length ? '|' : '');
+                typewriterTimeout = setTimeout(() => typePhrase(phrase, i + 1), 55);
+            } else {
+                // Hold for 2.5s then erase
+                typewriterTimeout = setTimeout(() => erasePhrase(phrase), 2500);
+            }
+        }
+
+        function erasePhrase(phrase) {
+            if (document.activeElement === searchInput) return;
+            if (phrase.length > 0) {
+                searchInput.placeholder = phrase.slice(0, -1) + '|';
+                typewriterTimeout = setTimeout(() => erasePhrase(phrase.slice(0, -1)), 30);
+            } else {
+                searchInput.placeholder = '';
+                currentPhraseIndex = (currentPhraseIndex + 1) % placeholders.length;
+                typewriterTimeout = setTimeout(() => typePhrase(placeholders[currentPhraseIndex]), 600);
+            }
+        }
+
+        // Pause typewriter when user focuses, resume when they leave
+        searchInput.addEventListener('focus', () => { clearTimeout(typewriterTimeout); searchInput.placeholder = ''; });
+        searchInput.addEventListener('blur', () => {
+            if (!searchInput.value) {
+                typewriterTimeout = setTimeout(() => typePhrase(placeholders[currentPhraseIndex]), 800);
+            }
+        });
+
+        // Shuffle so it's not always the same order
+        placeholders.sort(() => Math.random() - 0.5);
+        typePhrase(placeholders[0]);
+
+        let searchEngine = 'brave';
+        document.getElementById('search-engine-toggle').addEventListener('click', function() {
+            searchEngine = searchEngine === 'brave' ? 'duckduckgo' : 'brave';
+            this.innerHTML = searchEngine === 'brave' ? '<i class="fas fa-shield-alt"></i>' : '<i class="fas fa-duck"></i>';
+        });
+        document.getElementById('search-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (!query) return;
+                if (query.includes('.') && !query.includes(' ')) {
+                    window.open(query.startsWith('http') ? query : 'https://' + query, '_blank');
+                } else {
+                    const url = searchEngine === 'brave' ? 'https://search.brave.com/search?q=' + encodeURIComponent(query) : 'https://duckduckgo.com/?q=' + encodeURIComponent(query);
+                    window.open(url, '_blank');
+                }
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('search-input').focus();
+            }
+        });
+
+        // Voice Search
+        document.getElementById('voice-search').addEventListener('click', () => {
+            if ('webkitSpeechRecognition' in window) {
+                const recognition = new webkitSpeechRecognition();
+                recognition.lang = 'en-US';
+                recognition.onresult = (event) => { document.getElementById('search-input').value = event.results[0][0].transcript; };
+                recognition.start();
+            } else {
+                alert('Voice search not supported');
+            }
+        });
+
+        // Profile Picture
+        const profilePic = document.getElementById('profile-pic');
+        const savedProfilePic = localStorage.getItem('profilePic');
+        if (savedProfilePic) profilePic.src = savedProfilePic;
+        profilePic.addEventListener('click', () => {
+            const url = prompt('Enter your profile picture URL:');
+            if (url) { profilePic.src = url; localStorage.setItem('profilePic', url); }
+        });
+
+        // Zen Mode — fade everything except search bar
+        let zenActive = false;
+        const zenBtn = document.getElementById('zen-mode');
+        const zenTargets = [
+            document.querySelector('.header'),
+            document.querySelector('.tabs'),
+            document.getElementById('widget-grid'),
+            document.getElementById('warp-btn'),
+        ];
+        const searchSection = document.querySelector('.search-section');
+
+        function enterZen() {
+            zenActive = true;
+            zenBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            zenBtn.style.background = 'rgba(168, 85, 247, 0.5)';
+
+            zenTargets.forEach(el => {
+                if (!el) return;
+                el.style.transition = 'opacity 600ms ease';
+                el.style.opacity = '0';
+                el.style.pointerEvents = 'none';
+            });
+
+            // Brighten the background
+            document.getElementById('bg').style.transition = 'filter 600ms ease';
+            document.getElementById('bg').style.filter = 'brightness(1)';
+
+            // Move search bar to top-center
+            searchSection.style.transition = 'all 600ms ease';
+            searchSection.style.position = 'fixed';
+            searchSection.style.top = '6rem';
+            searchSection.style.left = '50%';
+            searchSection.style.transform = 'translateX(-50%)';
+            searchSection.style.width = '100%';
+            searchSection.style.zIndex = '200';
+            searchSection.style.display = 'flex';
+            searchSection.style.opacity = '1';
+            setTimeout(() => { document.getElementById('search-input').focus(); }, 650);
+        }
+
+        function exitZen() {
+            zenActive = false;
+            zenBtn.innerHTML = '<i class="fas fa-eye"></i>';
+            zenBtn.style.background = '';
+
+            zenTargets.forEach(el => {
+                if (!el) return;
+                el.style.transition = 'opacity 500ms ease';
+                el.style.opacity = '1';
+                el.style.pointerEvents = '';
+            });
+
+            // Restore background brightness
+            document.getElementById('bg').style.filter = 'brightness(0.85)';
+
+            // Restore search bar
+            searchSection.style.transition = 'all 500ms ease';
+            searchSection.style.position = '';
+            searchSection.style.top = '';
+            searchSection.style.left = '';
+            searchSection.style.transform = '';
+            searchSection.style.width = '';
+            searchSection.style.zIndex = '';
+        }
+
+        zenBtn.addEventListener('click', () => { zenActive ? exitZen() : enterZen(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && zenActive) exitZen(); });
+
+
+        const savedTitle = localStorage.getItem('pageTitle');
+        if (savedTitle) {
+            document.title = savedTitle;
+            document.getElementById('page-title').textContent = savedTitle;
+        }
+
+        // Widget Templates
+        const widgetTemplates = {
+            clock: {
+                title: '⏰ Cosmic Clock',
+                content: '<div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem;"><svg width="200" height="200" viewBox="0 0 200 200" id="analog-clock"><circle cx="100" cy="100" r="95" fill="rgba(0,0,0,0.3)" stroke="rgba(168, 85, 247, 0.5)" stroke-width="3"/><circle cx="100" cy="100" r="5" fill="#a855f7"/><line id="hour-hand" x1="100" y1="100" x2="100" y2="60" stroke="#a855f7" stroke-width="6" stroke-linecap="round"/><line id="minute-hand" x1="100" y1="100" x2="100" y2="40" stroke="#06b6d4" stroke-width="4" stroke-linecap="round"/><line id="second-hand" x1="100" y1="100" x2="100" y2="30" stroke="#ec4899" stroke-width="2" stroke-linecap="round"/></svg><div style="text-align: center;"><div style="font-size: 1.5rem; font-weight: 600;" id="digital-time">00:00:00</div><div style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem;" id="date"></div></div></div>',
+                init: function() {
+                    function updateClock() {
+                        const now = new Date();
+                        const hours = now.getHours() % 12;
+                        const minutes = now.getMinutes();
+                        const seconds = now.getSeconds();
+                        const hourAngle = (hours * 30) + (minutes * 0.5) - 90;
+                        const minuteAngle = (minutes * 6) - 90;
+                        const secondAngle = (seconds * 6) - 90;
+                        const hourHand = document.getElementById('hour-hand');
+                        const minuteHand = document.getElementById('minute-hand');
+                        const secondHand = document.getElementById('second-hand');
+                        if (hourHand) hourHand.setAttribute('transform', 'rotate(' + hourAngle + ' 100 100)');
+                        if (minuteHand) minuteHand.setAttribute('transform', 'rotate(' + minuteAngle + ' 100 100)');
+                        if (secondHand) secondHand.setAttribute('transform', 'rotate(' + secondAngle + ' 100 100)');
+                        document.getElementById('digital-time').textContent = now.toLocaleTimeString('en-US', { hour12: false });
+                        document.getElementById('date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                    }
+                    updateClock();
+                    setInterval(updateClock, 1000);
+                }
+            },
+            weather: {
+                title: '🌤️ Weather',
+                content: '<div style="text-align: center;"><div style="font-size: 3rem; margin-bottom: 1rem;" id="weather-icon">☀️</div><div style="font-size: 2rem; font-weight: 300;" id="weather-temp">--°C</div><div style="color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem;" id="weather-city">Loading...</div><div style="color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem;" id="weather-cond">--</div></div>',
+                init: async function() {
+                    try {
+                        const res = await fetch('https://wttr.in/?format=j1');
+                        const data = await res.json();
+                        const current = data.current_condition[0];
+                        const location = data.nearest_area[0];
+                        const temp = Math.round(current.temp_C);
+                        document.getElementById('weather-temp').textContent = temp + '°C';
+                        document.getElementById('weather-city').textContent = location.areaName[0].value + ', ' + location.country[0].value;
+                        document.getElementById('weather-cond').textContent = current.weatherDesc[0].value;
+                        const icons = { 113: '☀️', 116: '⛅', 119: '☁️', 122: '☁️', 143: '🌫️', 176: '🌦️', 200: '⛈️', 293: '🌧️', 296: '🌧️', 299: '🌧️', 302: '🌧️', 305: '🌧️', 308: '🌧️', 323: '🌨️', 326: '🌨️', 329: '❄️', 332: '❄️', 335: '❄️', 338: '❄️', 386: '⛈️', 389: '⛈️', 392: '⛈️', 395: '❄️' };
+                        document.getElementById('weather-icon').textContent = icons[parseInt(current.weatherCode)] || '🌤️';
+                    } catch (err) {
+                        document.getElementById('weather-city').textContent = 'Unable to load';
+                        document.getElementById('weather-cond').textContent = 'Check connection';
+                    }
+                }
+            },
+            links: {
+                title: '🔗 Quick Links',
+                content: '<div class="links-grid"></div><button class="add-link-btn" style="width: 100%; margin-top: 0.6rem; padding: 0.4rem; background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 8px; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 0.75rem;"><i class="fas fa-plus"></i> Add</button>',
+                init: function(widget) {
+                    if (!widget) return;
+
+                    // Shrink-wrap the widget container — only affects links widget
+                    const widgetEl = widget.closest('.widget');
+                    if (widgetEl) {
+                        widgetEl.style.maxHeight = 'fit-content';
+                        widgetEl.style.padding = '1rem';
+                    }
+                    widget.style.overflow = 'visible';
+                    widget.style.flex = 'none';
+                    
+                    const defaultLinks = [
+                        { url: 'https://github.com', name: 'GitHub', icon: 'fab fa-github', color: '#fff' },
+                        { url: 'https://x.com', name: 'X', icon: 'fab fa-x-twitter', color: '#1DA1F2' },
+                        { url: 'https://youtube.com', name: 'YouTube', icon: 'fab fa-youtube', color: '#FF0000' },
+                        { url: 'https://reddit.com', name: 'Reddit', icon: 'fab fa-reddit', color: '#FF4500' },
+                        { url: 'https://discord.com', name: 'Discord', icon: 'fab fa-discord', color: '#5865F2' },
+                        { url: 'https://gmail.com', name: 'Gmail', icon: 'fas fa-envelope', color: '#EA4335' }
+                    ];
+                    let customLinks = JSON.parse(localStorage.getItem('customLinks')) || defaultLinks;
+                    const grid = widget.querySelector('.links-grid');
+                    const addBtn = widget.querySelector('.add-link-btn');
+                    
+                    if (!grid || !addBtn) return;
+                    
+                    function renderLinks() {
+                        grid.innerHTML = '';
+                        grid.style.cssText = 'display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;';
+                        customLinks.forEach((link, index) => {
+                            const linkEl = document.createElement('a');
+                            linkEl.href = link.url;
+                            linkEl.target = '_blank';
+                            linkEl.style.cssText = 'position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.35rem; text-decoration: none; color: #fff; padding: 0.6rem 0.3rem; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s; cursor: pointer;';
+                            linkEl.innerHTML = '<div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.4);"><i class="' + link.icon + '" style="font-size: 1.4rem; color: ' + link.color + ';"></i></div><span style="font-size: 0.62rem; opacity: 0.8; text-align: center; max-width: 56px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' + link.name + '</span><button class="delete-link" data-index="' + index + '" style="position: absolute; top: 0.15rem; right: 0.15rem; background: rgba(239,68,68,0.85); border: none; color: #fff; width: 15px; height: 15px; border-radius: 50%; font-size: 0.55rem; cursor: pointer; opacity: 0; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center;">×</button>';
+                            linkEl.addEventListener('mouseenter', () => { linkEl.style.background = 'rgba(168,85,247,0.2)'; linkEl.style.borderColor = 'rgba(168,85,247,0.4)'; linkEl.style.transform = 'translateY(-2px)'; linkEl.querySelector('.delete-link').style.opacity = '1'; });
+                            linkEl.addEventListener('mouseleave', () => { linkEl.style.background = 'rgba(255,255,255,0.06)'; linkEl.style.borderColor = 'rgba(255,255,255,0.08)'; linkEl.style.transform = 'translateY(0)'; linkEl.querySelector('.delete-link').style.opacity = '0'; });
+                            grid.appendChild(linkEl);
+                        });
+                        grid.querySelectorAll('.delete-link').forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                customLinks.splice(parseInt(btn.getAttribute('data-index')), 1);
+                                localStorage.setItem('customLinks', JSON.stringify(customLinks));
+                                renderLinks();
+                            });
+                        });
+                    }
+                    renderLinks();
+                    addBtn.addEventListener('click', () => {
+                        const url = prompt('Enter URL:');
+                        if (!url) return;
+                        const name = prompt('Enter name:');
+                        if (!name) return;
+                        const icon = prompt('Enter Font Awesome icon (e.g., fas fa-star):') || 'fas fa-link';
+                        const color = prompt('Enter color (e.g., #FF0000):') || '#fff';
+                        customLinks.push({ url, name, icon, color });
+                        localStorage.setItem('customLinks', JSON.stringify(customLinks));
+                        renderLinks();
+                    });
+                }
+            },
+            news: {
+                title: '📰 Intel Feed',
+                content: '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;"><div style="display: flex; gap: 0.5rem; flex-wrap: wrap;"><button class="news-cat" data-cat="technology" style="padding: 0.5rem 1rem; background: rgba(168, 85, 247, 0.3); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">Tech</button><button class="news-cat" data-cat="general" style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">Top</button><button class="news-cat" data-cat="business" style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">Business</button></div><button class="refresh-news-btn" style="padding: 0.5rem; background: rgba(6, 182, 127, 0.3); border: 1px solid rgba(6, 182, 127, 0.5); border-radius: 8px; color: #fff; cursor: pointer;"><i class="fas fa-sync-alt"></i></button></div><div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;"><span class="animate-pulse" style="width: 8px; height: 8px; background: #10b981; border-radius: 50%;"></span>Live • Real news with images</div><div class="news-container"></div>',
+                init: async function(widget) {
+                    if (!widget) return;
+                    
+                    const container = widget.querySelector('.news-container');
+                    const refreshBtn = widget.querySelector('.refresh-news-btn');
+                    let currentCat = 'technology';
+                    
+                    const gradients = [
+                        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                        'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                        'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
+                    ];
+                    
+                    async function loadNews() {
+                        container.innerHTML = '<div style="padding: 2rem; text-align: center; color: rgba(255, 255, 255, 0.5);"><i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i><div style="margin-top: 1rem;">Loading fresh news...</div></div>';
+                        try {
+                            const res = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json?t=' + Date.now());
+                            const ids = await res.json();
+                            container.innerHTML = '';
+                            
+                            for (let i = 0; i < 6; i++) {
+                                const itemRes = await fetch('https://hacker-news.firebaseio.com/v0/item/' + ids[i] + '.json');
+                                const item = await itemRes.json();
+                                
+                                const newsItem = document.createElement('div');
+                                newsItem.style.cssText = 'display: flex; align-items: stretch; gap: 0; margin-bottom: 0.75rem; border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.4); cursor: pointer; transition: all 0.3s; border: 1px solid rgba(255, 255, 255, 0.1); max-width: 860px;';
+                                
+                                const timeAgo = Math.floor((Date.now() / 1000 - item.time) / 60);
+                                const timeStr = timeAgo < 60 ? timeAgo + 'm ago' : Math.floor(timeAgo / 60) + 'h ago';
+                                const gradient = gradients[i % gradients.length];
+                                
+                                let domain = '';
+                                let ogImageUrl = '';
+                                if (item.url) {
+                                    try {
+                                        domain = new URL(item.url).hostname.replace('www.', '');
+                                        // Use microlink for real OG images — reliable and free
+                                        ogImageUrl = 'https://api.microlink.io/?url=' + encodeURIComponent(item.url) + '&screenshot=false&meta=false&embed=image.url';
+                                    } catch(e) {}
+                                }
+
+                                const fallbackGradient = gradient.replace(/'/g, "\\'");
+                                const thumbnailHtml = '<div style="width: 160px; min-width: 160px; height: 120px; background: ' + gradient + '; position: relative; overflow: hidden; flex-shrink: 0;">'
+                                    + (ogImageUrl ? '<img src="' + ogImageUrl + '" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display=\'none\'">' : '')
+                                    + '<div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 0;">'
+                                    + (domain ? '<img src="https://favicon.im/' + domain + '?larger=true" style="width: 48px; height: 48px; object-fit: contain; opacity: 0.85; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));" onerror="this.style.display=\'none\'">' : '<i class="fas fa-newspaper" style="font-size: 2rem; opacity: 0.5;"></i>')
+                                    + '</div>'
+                                    + '</div>';
+
+                                const textHtml = '<div style="padding: 0.85rem 1rem; display: flex; flex-direction: column; justify-content: center; gap: 0.4rem; flex: 1; min-width: 0;">'
+                                    + '<div style="font-size: 0.95rem; font-weight: 600; line-height: 1.35; color: #fff; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">' + item.title + '</div>'
+                                    + '<div style="font-size: 0.72rem; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">'
+                                    + (domain ? '<span style="color: rgba(168,85,247,0.9);">' + domain + '</span><span>•</span>' : '')
+                                    + '<span><i class="fas fa-user" style="font-size: 0.65rem; margin-right: 0.25rem;"></i>' + (item.by || 'Anonymous') + '</span>'
+                                    + '<span>•</span>'
+                                    + '<span style="color: #10b981;"><i class="fas fa-arrow-up" style="font-size: 0.65rem; margin-right: 0.2rem;"></i>' + (item.score || 0) + '</span>'
+                                    + '<span>•</span><span>' + timeStr + '</span>'
+                                    + '</div>'
+                                    + '</div>';
+
+                                newsItem.innerHTML = thumbnailHtml + textHtml;
+                                
+                                newsItem.onmouseenter = () => { 
+                                    newsItem.style.transform = 'translateX(4px)'; 
+                                    newsItem.style.boxShadow = '0 4px 20px rgba(168, 85, 247, 0.25)'; 
+                                    newsItem.style.borderColor = 'rgba(168, 85, 247, 0.5)'; 
+                                };
+                                newsItem.onmouseleave = () => { 
+                                    newsItem.style.transform = 'translateX(0)'; 
+                                    newsItem.style.boxShadow = 'none'; 
+                                    newsItem.style.borderColor = 'rgba(255, 255, 255, 0.1)'; 
+                                };
+                                newsItem.onclick = () => window.open(item.url || 'https://news.ycombinator.com/item?id=' + item.id, '_blank');
+                                container.appendChild(newsItem);
+                            }
+                        } catch (err) {
+                            container.innerHTML = '<div style="padding: 2rem; text-align: center; color: #ef4444;"><i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i><div>Failed to load news</div></div>';
+                        }
+                    }
+                    
+                    widget.querySelectorAll('.news-cat').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            widget.querySelectorAll('.news-cat').forEach(b => {
+                                b.style.background = 'rgba(255, 255, 255, 0.1)';
+                                b.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                            });
+                            this.style.background = 'rgba(168, 85, 247, 0.3)';
+                            this.style.borderColor = 'rgba(168, 85, 247, 0.5)';
+                            currentCat = this.getAttribute('data-cat');
+                            loadNews();
+                        });
+                    });
+                    
+                    if (refreshBtn) refreshBtn.addEventListener('click', loadNews);
+                    loadNews();
+                    setInterval(loadNews, 300000);
+                }
+            },
+            youtube: {
+                title: '🎵 YouTube Music',
+                content: '<div style="background: rgba(0, 0, 0, 0.4); border-radius: 12px; padding: 1.5rem;"><div style="position: relative; padding-bottom: 56.25%; background: rgba(0,0,0,0.6); border-radius: 8px; margin-bottom: 1rem; overflow: hidden;"><iframe class="yt-iframe" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" allow="autoplay; encrypted-media" frameborder="0"></iframe><div class="video-placeholder" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255, 0, 0, 0.2), rgba(168, 85, 247, 0.2)); pointer-events: none;"><i class="fab fa-youtube" style="font-size: 4rem; color: #FF0000; margin-bottom: 1rem;"></i><div style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">Paste YouTube URL below</div></div></div><div style="margin-bottom: 1rem;"><div style="font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;" class="video-title">No video loaded</div><div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6);" class="video-channel">YouTube</div></div><div style="display: flex; justify-content: center; align-items: center; gap: 2rem; margin-bottom: 1.5rem;"><button class="shuffle-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.2rem; cursor: pointer; transition: all 0.2s;"><i class="fas fa-random"></i></button><button class="prev-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.8); font-size: 1.8rem; cursor: pointer; transition: all 0.2s;"><i class="fas fa-step-backward"></i></button><button class="play-pause-btn" style="background: #fff; border: none; color: #000; width: 48px; height: 48px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"><i class="fas fa-play"></i></button><button class="next-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.8); font-size: 1.8rem; cursor: pointer; transition: all 0.2s;"><i class="fas fa-step-forward"></i></button><button class="repeat-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.2rem; cursor: pointer; transition: all 0.2s;"><i class="fas fa-redo"></i></button></div><input type="text" class="yt-url-input" placeholder="Paste YouTube URL and press Enter..." style="width: 100%; padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; font-size: 0.9rem;"></div>',
+                init: function(widgetContent) {
+                    const urlInput = widgetContent.querySelector('.yt-url-input');
+                    const iframe = widgetContent.querySelector('.yt-iframe');
+                    const placeholder = widgetContent.querySelector('.video-placeholder');
+                    const videoTitle = widgetContent.querySelector('.video-title');
+                    const playPauseBtn = widgetContent.querySelector('.play-pause-btn');
+                    
+                    let isPlaying = false;
+                    const savedUrl = localStorage.getItem('ytUrl');
+                    if (savedUrl && urlInput) urlInput.value = savedUrl;
+                    
+                    function loadVideo(url) {
+                        if (!url) return;
+                        const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                        if (match && iframe && placeholder && videoTitle && playPauseBtn) {
+                            const videoId = match[1];
+                            localStorage.setItem('ytUrl', url);
+                            iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+                            placeholder.style.opacity = '0';
+                            setTimeout(() => { placeholder.style.display = 'none'; }, 300);
+                            videoTitle.textContent = 'Now Playing';
+                            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                            isPlaying = true;
+                        }
+                    }
+                    
+                    if (urlInput) {
+                        urlInput.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') {
+                                loadVideo(e.target.value.trim());
+                            }
+                        });
+                    }
+                      
+                    if (playPauseBtn) {
+                        playPauseBtn.addEventListener('click', () => {
+                            if (!isPlaying && urlInput) {
+                                loadVideo(urlInput.value.trim());
+                            } else if (isPlaying && iframe && placeholder && videoTitle && playPauseBtn) {
+                                iframe.src = '';
+                                placeholder.style.display = 'flex';
+                                placeholder.style.opacity = '1';
+                                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                                videoTitle.textContent = 'No video loaded';
+                                isPlaying = false;
+                            }
+                        });
+                    }
+                    
+                    if (savedUrl) loadVideo(savedUrl);
+                }
+            },
+            meme: {
+                title: '😂 Vibe Corner',
+                content: '<div style="text-align: center;"><div style="width: 100%; max-height: 350px; overflow: hidden; border-radius: 8px; margin-bottom: 1rem; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><img class="meme-img" src="" alt="Loading..." style="max-width: 100%; max-height: 350px; object-fit: contain; display: none;"></div><div class="meme-loading" style="padding: 2rem; color: rgba(255, 255, 255, 0.5);">Loading vibe...</div><button class="meme-refresh" style="width: 100%; padding: 0.75rem; background: rgba(168, 85, 247, 0.3); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 8px; color: #fff; cursor: pointer;">New Vibe</button></div>',
+                init: function(widget) {
+                    const memeImg = widget.querySelector('.meme-img');
+                    const memeLoading = widget.querySelector('.meme-loading');
+                    const memeRefresh = widget.querySelector('.meme-refresh');
+                    
+                    async function loadMeme() {
+                        memeLoading.style.display = 'block';
+                        memeImg.style.display = 'none';
+                        try {
+                            const res = await fetch('https://meme-api.com/gimme');
+                            const data = await res.json();
+                            memeImg.src = data.url;
+                            memeImg.style.display = 'block';
+                            memeLoading.style.display = 'none';
+                        } catch (err) {
+                            memeLoading.textContent = 'Failed to load';
+                        }
+                    }
+                    loadMeme();
+                    memeRefresh.addEventListener('click', loadMeme);
+                }
+            }
+        };
+
+        // Widget Management
+        const defaultPages = { dashboard: ['links', 'news'], intel: ['news'], vibes: ['meme', 'youtube'] };
+        let currentPage = localStorage.getItem('currentPage') || 'dashboard';
+        let widgets = JSON.parse(localStorage.getItem('widgets_' + currentPage)) || defaultPages[currentPage] || [];
+        
+        function createWidget(type) {
+            const template = widgetTemplates[type];
+            if (!template) return null;
+            const widget = document.createElement('div');
+            widget.className = 'widget';
+            widget.setAttribute('data-type', type);
+            widget.innerHTML = '<div class="widget-header"><div class="widget-title">' + template.title + '</div><div class="widget-close">✕</div></div><div class="widget-content">' + template.content + '</div>';
+            widget.querySelector('.widget-close').addEventListener('click', () => {
+                widget.remove();
+                widgets = widgets.filter(w => w !== type);
+                localStorage.setItem('widgets_' + currentPage, JSON.stringify(widgets));
+            });
+            return widget;
+        }
+        
+        function renderWidgets() {
+            const grid = document.getElementById('widget-grid');
+            grid.innerHTML = '';
+            widgets.forEach(type => {
+                const widget = createWidget(type);
+                if (widget) {
+                    grid.appendChild(widget);
+                    if (widgetTemplates[type].init) {
+                        const widgetContent = widget.querySelector('.widget-content');
+                        widgetTemplates[type].init(widgetContent);
+                    }
+                }
+            });
+            new Sortable(grid, {
+                animation: 150,
+                ghostClass: 'opacity-50',
+                onEnd: function() {
+                    widgets = Array.from(grid.children).map(el => el.getAttribute('data-type'));
+                    localStorage.setItem('widgets_' + currentPage, JSON.stringify(widgets));
+                }
+            });
+        }
+        
+        renderWidgets();
+        
+        document.getElementById('add-widget').addEventListener('click', () => {
+            const availableWidgets = Object.keys(widgetTemplates).filter(w => !widgets.includes(w));
+            if (availableWidgets.length === 0) { alert('All widgets added!'); return; }
+            const widget = prompt('Available: ' + availableWidgets.join(', ') + '\n\nEnter widget name:');
+            if (widget && widgetTemplates[widget] && !widgets.includes(widget)) {
+                widgets.push(widget);
+                localStorage.setItem('widgets_' + currentPage, JSON.stringify(widgets));
+                renderWidgets();
+            }
+        });
+        
+        document.getElementById('warp-btn').addEventListener('click', () => {
+            widgets.sort(() => Math.random() - 0.5);
+            localStorage.setItem('widgets_' + currentPage, JSON.stringify(widgets));
+            renderWidgets();
+        });
+        
+        // Tabs
+        // Set active tab on load
+        document.querySelectorAll('.tab').forEach(tab => {
+            if (tab.getAttribute('data-page') === currentPage) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+        
+        // Tab click handlers
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentPage = tab.getAttribute('data-page');
+                localStorage.setItem('currentPage', currentPage);
+                widgets = JSON.parse(localStorage.getItem('widgets_' + currentPage)) || defaultPages[currentPage] || [];
+                renderWidgets();
+            });
+        });
+        
+        // Parallax
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            document.getElementById('bg').style.transform = 'translate(' + (-x) + 'px, ' + (-y) + 'px) scale(1.1)';
+        });
+
+        // Nav Clock
+        function updateNavClock() {
+            const now = new Date();
+            const hours = now.getHours() % 12;
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            
+            const hourAngle = (hours * 30) + (minutes * 0.5) - 90;
+            const minuteAngle = (minutes * 6) - 90;
+            const secondAngle = (seconds * 6) - 90;
+            
+            const hourHand = document.getElementById('nav-hour-hand');
+            const minuteHand = document.getElementById('nav-minute-hand');
+            const secondHand = document.getElementById('nav-second-hand');
+            
+            if (hourHand) hourHand.setAttribute('transform', 'rotate(' + hourAngle + ' 50 50)');
+            if (minuteHand) minuteHand.setAttribute('transform', 'rotate(' + minuteAngle + ' 50 50)');
+            if (secondHand) secondHand.setAttribute('transform', 'rotate(' + secondAngle + ' 50 50)');
+            
+            document.getElementById('nav-time').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+            document.getElementById('nav-date').textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        }
+        updateNavClock();
+        setInterval(updateNavClock, 1000);
+
+        // Nav Weather
+        async function updateNavWeather() {
+            try {
+                const res = await fetch('https://wttr.in/?format=j1');
+                const data = await res.json();
+                const current = data.current_condition[0];
+                const temp = Math.round(current.temp_C);
+                document.getElementById('nav-weather-temp').textContent = temp + '°C';
+                const icons = { 113: '☀️', 116: '⛅', 119: '☁️', 122: '☁️', 143: '🌫️', 176: '🌦️', 200: '⛈️', 293: '🌧️', 296: '🌧️', 299: '🌧️', 302: '🌧️', 305: '🌧️', 308: '🌧️', 323: '🌨️', 326: '🌨️', 329: '❄️', 332: '❄️', 335: '❄️', 338: '❄️', 386: '⛈️', 389: '⛈️', 392: '⛈️', 395: '❄️' };
+                document.getElementById('nav-weather-icon').textContent = icons[parseInt(current.weatherCode)] || '🌤️';
+            } catch (err) {
+                document.getElementById('nav-weather-temp').textContent = '--°';
+            }
+        }
+        updateNavWeather();
+        setInterval(updateNavWeather, 600000);
+    </script>
+</body>
+</html>
