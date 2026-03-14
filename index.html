@@ -599,7 +599,7 @@
         async function fetchSuggestions(query) {
             if (!query.trim()) { hideSuggestions(); return; }
             try {
-                const res = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://duckduckgo.com/ac/?q=' + encodeURIComponent(query) + '&type=list'));
+                const res = await fetch('https://en.wikipedia.org/w/api.php?action=opensearch&search=' + encodeURIComponent(query) + '&limit=7&namespace=0&format=json&origin=*');
                 const data = await res.json();
                 const suggestions = data[1] || [];
                 if (!suggestions.length) { hideSuggestions(); return; }
