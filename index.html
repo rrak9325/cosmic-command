@@ -810,7 +810,9 @@
                 content: '<div style="text-align: center;"><div style="font-size: 3rem; margin-bottom: 1rem;" id="weather-icon">☀️</div><div style="font-size: 2rem; font-weight: 300;" id="weather-temp">--°C</div><div style="color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem;" id="weather-city">Loading...</div><div style="color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem;" id="weather-cond">--</div></div>',
                 init: async function() {
                     try {
-                        const res = await fetch('https://wttr.in/?format=j1');
+                        const coords = await getCoords();
+                        const url = coords ? 'https://wttr.in/' + coords.lat + ',' + coords.lon + '?format=j1' : 'https://wttr.in/?format=j1';
+                        const res = await fetch(url);
                         const data = await res.json();
                         const current = data.current_condition[0];
                         const location = data.nearest_area[0];
@@ -1422,9 +1424,22 @@
         setInterval(updateNavClock, 1000);
 
         // Nav Weather
+        function getCoords() {
+            return new Promise((resolve) => {
+                if (!navigator.geolocation) { resolve(null); return; }
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+                    () => resolve(null),
+                    { timeout: 5000 }
+                );
+            });
+        }
+
         async function updateNavWeather() {
             try {
-                const res = await fetch('https://wttr.in/?format=j1');
+                const coords = await getCoords();
+                const url = coords ? 'https://wttr.in/' + coords.lat + ',' + coords.lon + '?format=j1' : 'https://wttr.in/?format=j1';
+                const res = await fetch(url);
                 const data = await res.json();
                 const current = data.current_condition[0];
                 const temp = Math.round(current.temp_C);
