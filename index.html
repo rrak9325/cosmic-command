@@ -1250,7 +1250,7 @@
                 init: function(widget) {
                     const CLIENT_ID = 'b5b12ae713ce44c68eb6660bf9ff8613';
                     const REDIRECT = location.origin + location.pathname;
-                    const SCOPES = 'user-read-currently-playing user-read-playback-state';
+                    const SCOPES = 'user-read-currently-playing user-read-playback-state user-read-recently-played';
                     const container = widget.querySelector('.sp-container');
 
                     // PKCE helpers
@@ -1370,9 +1370,16 @@
                     async function poll() {
                         const token = await getValidToken();
                         if (!token) { renderLogin(); return; }
-                        // Try /me/player first (more reliable), fall back to currently-playing
                         let data = await apiCall('/me/player');
                         if (!data || !data.item) data = await apiCall('/me/player/currently-playing');
+                        if (!data || !data.item) {
+                            // Fallback: show last played track
+                            const recent = await apiCall('/me/player/recently-played?limit=1');
+                            if (recent && recent.items && recent.items.length) {
+                                const item = recent.items[0];
+                                data = { item: item.track, is_playing: false, progress_ms: 0 };
+                            }
+                        }
                         renderNowPlaying(data);
                     }
 
