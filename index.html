@@ -111,34 +111,58 @@
             position: absolute;
             top: calc(100% + 12px);
             left: 50%;
-            transform: translateX(-50%) scale(0.95);
-            width: 320px;
-            background: rgba(8, 8, 20, 0.92);
-            border: 1px solid rgba(168, 85, 247, 0.25);
-            border-radius: 20px;
+            transform: translateX(-50%) translateY(-8px) scale(0.96);
+            width: 380px;
+            background: rgba(6, 6, 18, 0.96);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 24px;
             padding: 1.25rem;
             z-index: 500;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04) inset;
         }
         #quick-links-panel.open {
             opacity: 1;
             pointer-events: all;
-            transform: translateX(-50%) scale(1);
+            transform: translateX(-50%) translateY(0) scale(1);
         }
         .ql-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .ql-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.5); }
-        .ql-add-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(168,85,247,0.2); border: 1px solid rgba(168,85,247,0.4); color: #a855f7; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; transition: all 0.2s; }
-        .ql-add-btn:hover { background: rgba(168,85,247,0.4); }
-        .ql-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
-        .ql-item { position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; text-decoration: none; color: #fff; padding: 0.6rem 0.3rem; border-radius: 14px; transition: all 0.2s; cursor: pointer; }
-        .ql-item:hover { background: rgba(168,85,247,0.15); }
+        .ql-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(255,255,255,0.35); }
+        .ql-add-btn { width: 26px; height: 26px; border-radius: 50%; background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.35); color: #a855f7; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; transition: all 0.2s; }
+        .ql-add-btn:hover { background: rgba(168,85,247,0.35); transform: rotate(90deg); }
+        .ql-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
+        .ql-item {
+            position: relative; display: flex; flex-direction: column; align-items: center;
+            gap: 0.35rem; text-decoration: none; color: #fff;
+            padding: 0.55rem 0.2rem; border-radius: 16px;
+            transition: background 0.15s, transform 0.15s;
+            cursor: pointer;
+        }
+        .ql-item:hover { background: rgba(168,85,247,0.12); transform: translateY(-2px); }
         .ql-item:hover .ql-delete { opacity: 1; }
-        .ql-icon { width: 46px; height: 46px; border-radius: 14px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; }
-        .ql-name { font-size: 0.65rem; color: rgba(255,255,255,0.75); text-align: center; max-width: 56px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 1px 4px rgba(0,0,0,0.9); }
-        .ql-delete { position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: rgba(239,68,68,0.9); border: none; color: #fff; font-size: 0.6rem; cursor: pointer; opacity: 0; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; }
+        .ql-icon {
+            width: 44px; height: 44px; border-radius: 14px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            transition: box-shadow 0.15s;
+        }
+        .ql-item:hover .ql-icon { box-shadow: 0 0 14px rgba(168,85,247,0.35); border-color: rgba(168,85,247,0.4); }
+        .ql-icon img { width: 26px; height: 26px; object-fit: contain; }
+        .ql-icon i { font-size: 1.25rem; }
+        .ql-name { font-size: 0.6rem; color: rgba(255,255,255,0.6); text-align: center; max-width: 52px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .ql-delete { position: absolute; top: 1px; right: 1px; width: 15px; height: 15px; border-radius: 50%; background: rgba(239,68,68,0.9); border: none; color: #fff; font-size: 0.55rem; cursor: pointer; opacity: 0; transition: opacity 0.15s; display: flex; align-items: center; justify-content: center; }
+        /* inline add form */
+        #ql-add-form { display: none; margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.07); }
+        #ql-add-form.show { display: block; }
+        .ql-input { width: 100%; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-size: 0.8rem; font-family: inherit; margin-bottom: 0.4rem; outline: none; transition: border-color 0.15s; }
+        .ql-input:focus { border-color: rgba(168,85,247,0.5); }
+        .ql-input::placeholder { color: rgba(255,255,255,0.3); }
+        .ql-save-btn { width: 100%; padding: 0.5rem; background: rgba(168,85,247,0.25); border: 1px solid rgba(168,85,247,0.4); border-radius: 10px; color: #fff; font-size: 0.8rem; font-family: inherit; cursor: pointer; transition: background 0.15s; }
+        .ql-save-btn:hover { background: rgba(168,85,247,0.45); }
     </style>
 </head>
 <body>
@@ -158,7 +182,7 @@
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <img id="profile-pic" src="https://ui-avatars.com/api/?name=RANVER&background=a855f7&color=fff&size=64" alt="Profile" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid rgba(168, 85, 247, 0.5); cursor: pointer;" title="Click to change profile picture">
                 <div>
-                    <div style="font-size: 1.5rem; font-weight: 700; text-shadow: 0 1px 8px rgba(0,0,0,1), 0 0 20px rgba(168, 85, 247, 0.8);">RANVER</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; text-shadow: 0 1px 8px rgba(0,0,0,1), 0 0 20px rgba(168, 85, 247, 0.8);">RAJ</div>
                     <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.7); letter-spacing: 0.2em; text-shadow: 0 1px 6px rgba(0,0,0,0.9);">COSMIC COMMAND</div>
                 </div>
             </div>
@@ -178,7 +202,7 @@
                     <div style="width: 1px; height: 60px; background: rgba(255, 255, 255, 0.1);"></div>
                     <div style="text-align: center;">
                         <div style="font-size: 1.5rem;" id="nav-weather-icon">☀️</div>
-                        <div style="font-size: 1.2rem; font-weight: 600;" id="nav-weather-temp">--°</div>
+                        <div style="font-size: 1.2rem; font-weight: 600;" id="nav-weather-temp">--°C</div>
                     </div>
                 </div>
                 <button id="refresh-bg" class="search-btn" title="New Background"><i class="fas fa-sync-alt"></i></button>
@@ -204,9 +228,14 @@
                 <div id="quick-links-panel">
                     <div class="ql-header">
                         <span class="ql-title">Quick Links</span>
-                        <button class="ql-add-btn" id="ql-add"><i class="fas fa-plus"></i></button>
+                        <button class="ql-add-btn" id="ql-add" title="Add link"><i class="fas fa-plus"></i></button>
                     </div>
                     <div class="ql-grid" id="ql-grid"></div>
+                    <div id="ql-add-form">
+                        <input class="ql-input" id="ql-url-input" placeholder="https://example.com" type="url">
+                        <input class="ql-input" id="ql-name-input" placeholder="Name">
+                        <button class="ql-save-btn" id="ql-save">Add Link</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -229,6 +258,9 @@
                 <span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">Live feed</span>
             </div>
             <div id="intel-articles" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(340px,1fr)); gap:0.85rem;"></div>
+            <div style="display:flex; justify-content:center; padding:1rem 0 0.5rem;">
+                <button id="intel-load-more" style="padding:0.7rem 2rem; background:rgba(168,85,247,0.15); border:1px solid rgba(168,85,247,0.35); border-radius:50px; color:rgba(255,255,255,0.8); cursor:pointer; font-size:0.85rem; font-family:inherit; transition:all 0.2s; display:none;" onmouseover="this.style.background='rgba(168,85,247,0.3)'" onmouseout="this.style.background='rgba(168,85,247,0.15)'"><i class="fas fa-chevron-down" style="margin-right:0.5rem;"></i>Load More</button>
+            </div>
         </div>
     </div>
 
@@ -236,6 +268,18 @@
     <button id="zen-mode" class="search-btn" title="Zen Mode" style="position: fixed; top: 1.25rem; right: 1rem; z-index: 9999; width: 40px; height: 40px; border-radius: 50%; background: rgba(168,85,247,0.3); border: 1px solid rgba(168,85,247,0.5);"><i class="fas fa-eye"></i></button>
 
     <script>
+        // Shared time helper
+        function timeAgo(date) {
+            const mins = Math.floor((Date.now() - new Date(date)) / 60000);
+            if (mins < 1) return 'just now';
+            if (mins < 60) return mins + 'm ago';
+            const hrs = Math.floor(mins / 60);
+            if (hrs < 24) return hrs + 'h ago';
+            const days = Math.floor(hrs / 24);
+            if (days < 7) return days + 'd ago';
+            return Math.floor(days / 7) + 'w ago';
+        }
+
         // Starfield
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
@@ -426,7 +470,7 @@
             "how many monitors is too many monitors",
             "why is javascript like this",
             "how to explain to my mom what i do",
-            "rubber duck debugging actually works??",
+            "rubber duck debugging actually works!!",
             "how to survive a code review",
             "why did i become a developer",
             "stack overflow is down what do i do",
@@ -531,8 +575,10 @@
         let typewriterTimeout = null;
         let currentPhraseIndex = 0;
 
+        let currentDisplayPhrase = '';
         function typePhrase(phrase, i = 0) {
             if (document.activeElement === searchInput) return;
+            if (i === 0) currentDisplayPhrase = phrase;
             if (i <= phrase.length) {
                 searchInput.placeholder = phrase.slice(0, i) + (i < phrase.length ? '|' : '');
                 typewriterTimeout = setTimeout(() => typePhrase(phrase, i + 1), 55);
@@ -568,6 +614,12 @@
 
         let searchEngine = 'brave';
         let voiceActive = false;
+
+        // Brave button — search typed text or current placeholder
+        document.getElementById('search-engine-toggle').addEventListener('click', () => {
+            const query = searchInput.value.trim() || currentDisplayPhrase;
+            if (query) doSearch(query);
+        });
         // Search suggestions
         const suggestionsBox = document.getElementById('search-suggestions');
         let suggestionIndex = -1;
@@ -703,7 +755,7 @@
             if (url) { profilePic.src = url; localStorage.setItem('profilePic', url); }
         });
 
-        // Zen Mode — fade everything except search bar
+        // Zen Mode � fade everything except search bar
         let zenActive = false;
         const zenBtn = document.getElementById('zen-mode');
         const zenTargets = [
@@ -781,7 +833,7 @@
         // Widget Templates
         const widgetTemplates = {
             clock: {
-                title: '⏰ Cosmic Clock',
+                title: '🕐 Cosmic Clock',
                 content: '<div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem;"><svg width="200" height="200" viewBox="0 0 200 200" id="analog-clock"><circle cx="100" cy="100" r="95" fill="rgba(0,0,0,0.3)" stroke="rgba(168, 85, 247, 0.5)" stroke-width="3"/><circle cx="100" cy="100" r="5" fill="#a855f7"/><line id="hour-hand" x1="100" y1="100" x2="100" y2="60" stroke="#a855f7" stroke-width="6" stroke-linecap="round"/><line id="minute-hand" x1="100" y1="100" x2="100" y2="40" stroke="#06b6d4" stroke-width="4" stroke-linecap="round"/><line id="second-hand" x1="100" y1="100" x2="100" y2="30" stroke="#ec4899" stroke-width="2" stroke-linecap="round"/></svg><div style="text-align: center;"><div style="font-size: 1.5rem; font-weight: 600;" id="digital-time">00:00:00</div><div style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem;" id="date"></div></div></div>',
                 init: function() {
                     function updateClock() {
@@ -820,8 +872,8 @@
                         document.getElementById('weather-temp').textContent = temp + '°C';
                         document.getElementById('weather-city').textContent = location.areaName[0].value + ', ' + location.country[0].value;
                         document.getElementById('weather-cond').textContent = current.weatherDesc[0].value;
-                        const icons = { 113: '☀️', 116: '⛅', 119: '☁️', 122: '☁️', 143: '🌫️', 176: '🌦️', 200: '⛈️', 293: '🌧️', 296: '🌧️', 299: '🌧️', 302: '🌧️', 305: '🌧️', 308: '🌧️', 323: '🌨️', 326: '🌨️', 329: '❄️', 332: '❄️', 335: '❄️', 338: '❄️', 386: '⛈️', 389: '⛈️', 392: '⛈️', 395: '❄️' };
-                        document.getElementById('weather-icon').textContent = icons[parseInt(current.weatherCode)] || '🌤️';
+                        const icons = { 113: '☀️', 116: '⛅', 119: '☁️', 122: '☁️', 143: '🌫️', 176: '🌦️', 200: '⛈️', 293: '🌧️', 296: '🌧️', 299: '🌧️', 302: '🌧️', 305: '🌧️', 308: '🌧️', 323: '❄️', 326: '❄️', 329: '❄️', 332: '❄️', 335: '❄️', 338: '❄️', 386: '⛈️', 389: '⛈️', 392: '⛈️', 395: '⛈️' };
+                        document.getElementById('weather-icon').textContent = icons[parseInt(current.weatherCode)] || '🌡️';
                     } catch (err) {
                         document.getElementById('weather-city').textContent = 'Unable to load';
                         document.getElementById('weather-cond').textContent = 'Check connection';
@@ -834,7 +886,7 @@
                 init: function(widget) {
                     if (!widget) return;
 
-                    // Shrink-wrap the widget container — only affects links widget
+                    // Shrink-wrap the widget container � only affects links widget
                     const widgetEl = widget.closest('.widget');
                     if (widgetEl) {
                         widgetEl.style.maxHeight = 'fit-content';
@@ -865,7 +917,7 @@
                             linkEl.href = link.url;
                             linkEl.target = '_blank';
                             linkEl.style.cssText = 'position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.35rem; text-decoration: none; color: #fff; padding: 0.6rem 0.3rem; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s; cursor: pointer;';
-                            linkEl.innerHTML = '<div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.4);"><i class="' + link.icon + '" style="font-size: 1.4rem; color: ' + link.color + ';"></i></div><span style="font-size: 0.62rem; opacity: 0.8; text-align: center; max-width: 56px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' + link.name + '</span><button class="delete-link" data-index="' + index + '" style="position: absolute; top: 0.15rem; right: 0.15rem; background: rgba(239,68,68,0.85); border: none; color: #fff; width: 15px; height: 15px; border-radius: 50%; font-size: 0.55rem; cursor: pointer; opacity: 0; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center;">×</button>';
+                            linkEl.innerHTML = '<div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.4);"><i class="' + link.icon + '" style="font-size: 1.4rem; color: ' + link.color + ';"></i></div><span style="font-size: 0.62rem; opacity: 0.8; text-align: center; max-width: 56px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' + link.name + '</span><button class="delete-link" data-index="' + index + '" style="position: absolute; top: 0.15rem; right: 0.15rem; background: rgba(239,68,68,0.85); border: none; color: #fff; width: 15px; height: 15px; border-radius: 50%; font-size: 0.55rem; cursor: pointer; opacity: 0; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center;">�</button>';
                             linkEl.addEventListener('mouseenter', () => { linkEl.style.background = 'rgba(168,85,247,0.2)'; linkEl.style.borderColor = 'rgba(168,85,247,0.4)'; linkEl.style.transform = 'translateY(-2px)'; linkEl.querySelector('.delete-link').style.opacity = '1'; });
                             linkEl.addEventListener('mouseleave', () => { linkEl.style.background = 'rgba(255,255,255,0.06)'; linkEl.style.borderColor = 'rgba(255,255,255,0.08)'; linkEl.style.transform = 'translateY(0)'; linkEl.querySelector('.delete-link').style.opacity = '0'; });
                             grid.appendChild(linkEl);
@@ -896,12 +948,14 @@
             },
             news: {
                 title: '📰 Intel Feed',
-                content: '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;"><div style="display: flex; gap: 0.5rem; flex-wrap: wrap;"><button class="news-cat active-cat" data-cat="hn" style="padding: 0.5rem 1rem; background: rgba(168, 85, 247, 0.3); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">Tech</button><button class="news-cat" data-cat="india" style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">🇮🇳 India</button><button class="news-cat" data-cat="world" style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">World</button></div><button class="refresh-news-btn" style="padding: 0.5rem; background: rgba(6, 182, 127, 0.3); border: 1px solid rgba(6, 182, 127, 0.5); border-radius: 8px; color: #fff; cursor: pointer;"><i class="fas fa-sync-alt"></i></button></div><div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;"><span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display:inline-block;"></span>Live feed</div><div class="news-container"></div>',
+                content: '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;"><div style="display: flex; gap: 0.5rem; flex-wrap: wrap;"><button class="news-cat active-cat" data-cat="hn" style="padding: 0.5rem 1rem; background: rgba(168, 85, 247, 0.3); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">Tech</button><button class="news-cat" data-cat="india" style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">🇮🇳 India</button><button class="news-cat" data-cat="world" style="padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; cursor: pointer; font-size: 0.8rem;">World</button></div><button class="refresh-news-btn" style="padding: 0.5rem; background: rgba(6, 182, 127, 0.3); border: 1px solid rgba(6, 182, 127, 0.5); border-radius: 8px; color: #fff; cursor: pointer;"><i class="fas fa-sync-alt"></i></button></div><div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;"><span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display:inline-block;"></span>Live feed</div><div class="news-container"></div><div style="display:flex;justify-content:center;padding:0.5rem 0;"><button class="news-load-more" style="display:none;padding:0.5rem 1.5rem;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.35);border-radius:50px;color:rgba(255,255,255,0.8);cursor:pointer;font-size:0.78rem;font-family:inherit;transition:all 0.2s;"><i class="fas fa-chevron-down" style="margin-right:0.4rem;"></i>Load More</button></div>',
                 init: async function(widget) {
                     if (!widget) return;
                     const container = widget.querySelector('.news-container');
                     const refreshBtn = widget.querySelector('.refresh-news-btn');
+                    const loadMoreBtn = widget.querySelector('.news-load-more');
                     let currentCat = 'hn';
+                    let _rssCache = {};
 
                     const gradients = [
                         'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -923,9 +977,15 @@
                         ]
                     };
 
+                    const readUrls = new Set(JSON.parse(localStorage.getItem('readNews') || '[]'));
+                    function markRead(url) {
+                        readUrls.add(url);
+                        localStorage.setItem('readNews', JSON.stringify([...readUrls].slice(-200)));
+                    }
                     function buildNewsItem(title, url, source, thumbnail, timeStr, gradient, i) {
+                        const isRead = readUrls.has(url);
                         const item = document.createElement('div');
-                        item.style.cssText = 'display:flex;align-items:stretch;margin-bottom:0.75rem;border-radius:12px;overflow:hidden;background:rgba(0,0,0,0.4);cursor:pointer;transition:all 0.3s;border:1px solid rgba(255,255,255,0.1);';
+                        item.style.cssText = 'display:flex;align-items:stretch;margin-bottom:0.75rem;border-radius:12px;overflow:hidden;background:rgba(0,0,0,0.4);cursor:pointer;transition:all 0.3s;border:1px solid rgba(255,255,255,0.1);' + (isRead ? 'opacity:0.45;' : '');
                         const thumb = '<div style="width:120px;min-width:120px;height:90px;background:' + gradient + ';position:relative;overflow:hidden;flex-shrink:0;">'
                             + (thumbnail ? '<img src="' + thumbnail + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'">' : '')
                             + '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">'
@@ -934,26 +994,26 @@
                             + '<div style="font-size:0.88rem;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + title + '</div>'
                             + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;gap:0.5rem;flex-wrap:wrap;">'
                             + '<span style="color:rgba(168,85,247,0.9);">' + source + '</span>'
-                            + (timeStr ? '<span>•</span><span>' + timeStr + '</span>' : '')
+                            + (timeStr ? '<span>·</span><span>' + timeStr + '</span>' : '')
                             + '</div></div>';
                         item.innerHTML = thumb + text;
                         item.onmouseenter = () => { item.style.transform = 'translateX(4px)'; item.style.borderColor = 'rgba(168,85,247,0.5)'; };
                         item.onmouseleave = () => { item.style.transform = 'translateX(0)'; item.style.borderColor = 'rgba(255,255,255,0.1)'; };
-                        item.onclick = () => window.open(url, '_blank');
+                        item.onclick = () => { markRead(url); item.style.opacity = '0.45'; window.open(url, '_blank'); };
                         return item;
                     }
 
-                    async function loadHN() {
-                        container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(255,255,255,0.5);"><i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i><div style="margin-top:1rem;">Loading...</div></div>';
+                    async function loadHN(append = false) {
+                        if (!append) container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(255,255,255,0.5);"><i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i><div style="margin-top:1rem;">Loading...</div></div>';
                         try {
                             const res = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json?t=' + Date.now());
                             const ids = await res.json();
-                            container.innerHTML = '';
-                            for (let i = 0; i < 6; i++) {
+                            const offset = append ? parseInt(container.getAttribute('data-hn-offset') || '20') : 0;
+                            if (!append) container.innerHTML = '';
+                            for (let i = offset; i < offset + 20; i++) {
                                 const itemRes = await fetch('https://hacker-news.firebaseio.com/v0/item/' + ids[i] + '.json');
                                 const item = await itemRes.json();
-                                const timeAgo = Math.floor((Date.now() / 1000 - item.time) / 60);
-                                const timeStr = timeAgo < 60 ? timeAgo + 'm ago' : Math.floor(timeAgo / 60) + 'h ago';
+                                const timeStr = timeAgo(new Date(item.time * 1000));
                                 let domain = '';
                                 let faviconUrl = '';
                                 if (item.url) {
@@ -962,7 +1022,6 @@
                                         faviconUrl = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
                                     } catch(e) {}
                                 }
-                                // Build item with favicon-based thumbnail
                                 const grad = gradients[i % gradients.length];
                                 const el = document.createElement('div');
                                 el.style.cssText = 'display:flex;align-items:stretch;margin-bottom:0.75rem;border-radius:12px;overflow:hidden;background:rgba(0,0,0,0.4);cursor:pointer;transition:all 0.3s;border:1px solid rgba(255,255,255,0.1);';
@@ -972,50 +1031,71 @@
                                     + '<div style="padding:0.7rem 0.85rem;display:flex;flex-direction:column;justify-content:center;gap:0.3rem;flex:1;min-width:0;">'
                                     + '<div style="font-size:0.88rem;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + item.title + '</div>'
                                     + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;gap:0.5rem;flex-wrap:wrap;">'
-                                    + (domain ? '<span style="color:rgba(168,85,247,0.9);">' + domain + '</span><span>•</span>' : '')
+                                    + (domain ? '<span style="color:rgba(168,85,247,0.9);">' + domain + '</span><span>·</span>' : '')
                                     + '<span style="color:#10b981;"><i class="fas fa-arrow-up" style="font-size:0.6rem;margin-right:2px;"></i>' + (item.score||0) + '</span>'
-                                    + '<span>•</span><span>' + timeStr + '</span>'
+                                    + '<span>·</span><span>' + timeStr + '</span>'
                                     + '</div></div>';
                                 el.onmouseenter = () => { el.style.transform = 'translateX(4px)'; el.style.borderColor = 'rgba(168,85,247,0.5)'; };
                                 el.onmouseleave = () => { el.style.transform = 'translateX(0)'; el.style.borderColor = 'rgba(255,255,255,0.1)'; };
-                                el.onclick = () => window.open(item.url || 'https://news.ycombinator.com/item?id=' + item.id, '_blank');
+                                const hnUrl = item.url || 'https://news.ycombinator.com/item?id=' + item.id;
+                                if (readUrls.has(hnUrl)) el.style.opacity = '0.45';
+                                el.onclick = () => { markRead(hnUrl); el.style.opacity = '0.45'; window.open(hnUrl, '_blank'); };
                                 container.appendChild(el);
                             }
+                            container.setAttribute('data-hn-offset', offset + 20);
+                            if (loadMoreBtn) loadMoreBtn.style.display = 'block';
                         } catch(err) {
                             container.innerHTML = '<div style="padding:2rem;text-align:center;color:#ef4444;">Failed to load</div>';
                         }
                     }
 
-                    async function loadRSS(cat) {
-                        container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(255,255,255,0.5);"><i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i><div style="margin-top:1rem;">Loading...</div></div>';
+                    async function loadRSS(cat, append = false) {
                         const feeds = rssFeeds[cat];
                         const proxy = 'https://api.rss2json.com/v1/api.json?t=' + Date.now() + '&rss_url=';
+                        const PAGE = 20;
+                        if (!append) {
+                            container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(255,255,255,0.5);"><i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i><div style="margin-top:1rem;">Loading...</div></div>';
+                            if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+                        }
                         try {
-                            const results = await Promise.all(feeds.map(f => fetch(proxy + encodeURIComponent(f.url)).then(r => r.json()).catch(() => null)));
-                            container.innerHTML = '';
-                            let count = 0;
-                            for (let fi = 0; fi < results.length; fi++) {
-                                const result = results[fi];
-                                if (!result || !result.items) continue;
-                                for (const item of result.items.slice(0, 4)) {
-                                    if (count >= 6) break;
-                                    const thumb = item.thumbnail || item.enclosure?.link || '';
-                                    const source = feeds[fi].name;
-                                    const pubDate = item.pubDate ? new Date(item.pubDate) : null;
-                                    const timeStr = pubDate ? Math.floor((Date.now() - pubDate) / 60000) + 'm ago' : '';
-                                    container.appendChild(buildNewsItem(item.title, item.link, source, thumb, timeStr, gradients[count % gradients.length], count));
-                                    count++;
-                                }
+                            if (!append || !_rssCache[cat]) {
+                                const results = await Promise.all(feeds.map((f, fi) => fetch(proxy + encodeURIComponent(f.url)).then(r => r.json()).then(d => (d.items || []).map(i => ({ ...i, _src: feeds[fi].name }))).catch(() => [])));
+                                _rssCache[cat] = results.flat();
                             }
-                            if (count === 0) container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(255,255,255,0.5);">No articles found</div>';
+                            const all = _rssCache[cat];
+                            const offset = append ? parseInt(container.getAttribute('data-rss-offset') || '0') : 0;
+                            if (!append) container.innerHTML = '';
+                            const slice = all.slice(offset, offset + PAGE);
+                            let count = 0;
+                            for (const item of slice) {
+                                const thumb = item.thumbnail || item.enclosure?.link || '';
+                                const pubDate = item.pubDate ? new Date(item.pubDate) : null;
+                                const timeStr = pubDate ? timeAgo(pubDate) : '';
+                                container.appendChild(buildNewsItem(item.title, item.link, item._src, thumb, timeStr, gradients[(offset + count) % gradients.length], offset + count));
+                                count++;
+                            }
+                            container.setAttribute('data-rss-offset', offset + count);
+                            if (count === 0 && !append) container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(255,255,255,0.5);">No articles found</div>';
+                            if (loadMoreBtn) loadMoreBtn.style.display = (offset + count < all.length) ? 'block' : 'none';
                         } catch(err) {
-                            container.innerHTML = '<div style="padding:2rem;text-align:center;color:#ef4444;">Failed to load</div>';
+                            if (!append) container.innerHTML = '<div style="padding:2rem;text-align:center;color:#ef4444;">Failed to load</div>';
                         }
                     }
 
                     function loadNews() {
+                        container.removeAttribute('data-hn-offset');
+                        container.removeAttribute('data-rss-offset');
+                        delete _rssCache[currentCat];
+                        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
                         if (currentCat === 'hn') loadHN();
                         else loadRSS(currentCat);
+                    }
+
+                    if (loadMoreBtn) {
+                        loadMoreBtn.addEventListener('click', () => {
+                            if (currentCat === 'hn') loadHN(true);
+                            else loadRSS(currentCat, true);
+                        });
                     }
 
                     widget.querySelectorAll('.news-cat').forEach(btn => {
@@ -1034,7 +1114,7 @@
                 }
             },
             youtube: {
-                title: '🎵 YouTube Music',
+                title: '🎬 YouTube Music',
                 content: '<div style="background: rgba(0, 0, 0, 0.4); border-radius: 12px; padding: 1.5rem;"><div style="position: relative; padding-bottom: 56.25%; background: rgba(0,0,0,0.6); border-radius: 8px; margin-bottom: 1rem; overflow: hidden;"><iframe class="yt-iframe" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" allow="autoplay; encrypted-media" frameborder="0"></iframe><div class="video-placeholder" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255, 0, 0, 0.2), rgba(168, 85, 247, 0.2)); pointer-events: none;"><i class="fab fa-youtube" style="font-size: 4rem; color: #FF0000; margin-bottom: 1rem;"></i><div style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">Paste YouTube URL below</div></div></div><div style="margin-bottom: 1rem;"><div style="font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem;" class="video-title">No video loaded</div><div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6);" class="video-channel">YouTube</div></div><div style="display: flex; justify-content: center; align-items: center; gap: 2rem; margin-bottom: 1.5rem;"><button class="shuffle-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.2rem; cursor: pointer; transition: all 0.2s;"><i class="fas fa-random"></i></button><button class="prev-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.8); font-size: 1.8rem; cursor: pointer; transition: all 0.2s;"><i class="fas fa-step-backward"></i></button><button class="play-pause-btn" style="background: #fff; border: none; color: #000; width: 48px; height: 48px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"><i class="fas fa-play"></i></button><button class="next-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.8); font-size: 1.8rem; cursor: pointer; transition: all 0.2s;"><i class="fas fa-step-forward"></i></button><button class="repeat-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.2rem; cursor: pointer; transition: all 0.2s;"><i class="fas fa-redo"></i></button></div><input type="text" class="yt-url-input" placeholder="Paste YouTube URL and press Enter..." style="width: 100%; padding: 0.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; font-size: 0.9rem;"></div>',
                 init: function(widgetContent) {
                     const urlInput = widgetContent.querySelector('.yt-url-input');
@@ -1127,7 +1207,7 @@
                         saved.textContent = 'saving...';
                         saveTimeout = setTimeout(() => {
                             localStorage.setItem('stickyNotes', area.value);
-                            saved.textContent = 'saved ✓';
+                            saved.textContent = 'saved ?';
                             setTimeout(() => { saved.textContent = ''; }, 2000);
                         }, 600);
                     });
@@ -1137,7 +1217,7 @@
                 }
             },
             pomodoro: {
-                title: '🍅 Pomodoro',
+                title: '⏱️ Pomodoro',
                 content: '<div style="text-align:center;padding:0.5rem 0;"><div style="font-size:0.75rem;color:rgba(255,255,255,0.4);letter-spacing:0.15em;margin-bottom:0.5rem;" class="pomo-mode">FOCUS</div><div style="font-size:3.5rem;font-weight:300;color:#a855f7;text-shadow:0 0 20px rgba(168,85,247,0.6);font-variant-numeric:tabular-nums;" class="pomo-time">25:00</div><div style="display:flex;justify-content:center;gap:0.75rem;margin-top:1rem;"><button class="pomo-start" style="padding:0.6rem 1.5rem;background:rgba(168,85,247,0.3);border:1px solid rgba(168,85,247,0.5);border-radius:20px;color:#fff;cursor:pointer;font-family:inherit;font-size:0.85rem;">Start</button><button class="pomo-reset" style="padding:0.6rem 1rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;color:#fff;cursor:pointer;font-family:inherit;font-size:0.85rem;">Reset</button></div><div style="display:flex;justify-content:center;gap:0.5rem;margin-top:1rem;"><button class="pomo-mode-btn active-pomo" data-work="25" data-label="FOCUS" style="padding:0.3rem 0.75rem;background:rgba(168,85,247,0.2);border:1px solid rgba(168,85,247,0.4);border-radius:12px;color:#fff;cursor:pointer;font-size:0.7rem;font-family:inherit;">25m</button><button class="pomo-mode-btn" data-work="5" data-label="BREAK" style="padding:0.3rem 0.75rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#fff;cursor:pointer;font-size:0.7rem;font-family:inherit;">5m</button><button class="pomo-mode-btn" data-work="15" data-label="LONG BREAK" style="padding:0.3rem 0.75rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#fff;cursor:pointer;font-size:0.7rem;font-family:inherit;">15m</button></div></div>',
                 init: function(widget) {
                     let totalSecs = 25 * 60, remaining = totalSecs, running = false, interval = null;
@@ -1179,7 +1259,7 @@
                 }
             },
             github: {
-                title: '🐙 GitHub Activity',
+                title: '💻 GitHub Activity',
                 content: '<div class="gh-container"></div>',
                 init: async function(widget) {
                     const container = widget.querySelector('.gh-container');
@@ -1193,31 +1273,54 @@
                         events.slice(0, 8).forEach(ev => {
                             const icon = typeIcon[ev.type] || 'fa-circle';
                             const repo = ev.repo.name.split('/')[1];
-                            const time = Math.floor((Date.now() - new Date(ev.created_at)) / 60000);
-                            const timeStr = time < 60 ? time + 'm ago' : Math.floor(time/60) + 'h ago';
-                            let desc = ev.type.replace('Event','');
-                            if (ev.type === 'PushEvent') desc = ev.payload.commits?.length + ' commit(s)';
+                            const timeStr = timeAgo(ev.created_at);
+                            let desc;
+                            if (ev.type === 'PushEvent') {
+                                const n = ev.payload.commits?.length || 0;
+                                desc = 'pushed ' + n + ' commit' + (n !== 1 ? 's' : '') + ' to ' + repo;
+                            } else if (ev.type === 'CreateEvent') {
+                                desc = 'created ' + (ev.payload.ref_type || 'repo') + (ev.payload.ref ? ' ' + ev.payload.ref : '') + ' in ' + repo;
+                            } else if (ev.type === 'IssuesEvent') {
+                                desc = (ev.payload.action || 'updated') + ' issue in ' + repo;
+                            } else if (ev.type === 'PullRequestEvent') {
+                                desc = (ev.payload.action || 'updated') + ' PR in ' + repo;
+                            } else if (ev.type === 'WatchEvent') {
+                                desc = 'starred ' + repo;
+                            } else if (ev.type === 'ForkEvent') {
+                                desc = 'forked ' + repo;
+                            } else {
+                                desc = ev.type.replace('Event', '').toLowerCase() + ' on ' + repo;
+                            }
                             const el = document.createElement('div');
                             el.style.cssText = 'display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.05);';
                             el.innerHTML = '<i class="fas ' + icon + '" style="color:#a855f7;font-size:0.75rem;width:14px;flex-shrink:0;"></i>'
-                                + '<div style="flex:1;min-width:0;"><div style="font-size:0.8rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + repo + '</div>'
-                                + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.4);">' + desc + ' • ' + timeStr + '</div></div>';
+                                + '<div style="flex:1;min-width:0;"><div style="font-size:0.78rem;line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">' + desc + '</div>'
+                                + '<div style="font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:0.15rem;">' + timeStr + '</div></div>';
                             container.appendChild(el);
                         });
                     } catch(e) { container.innerHTML = '<div style="padding:1rem;color:#ef4444;text-align:center;">Failed to load</div>'; }
                 }
             },
             crypto: {
-                title: '📈 Crypto',
-                content: '<div class="crypto-container"></div>',
+                title: '💰 Crypto',
+                content: '<div class="crypto-container"></div><div class="crypto-updated" style="font-size:0.65rem;color:rgba(255,255,255,0.3);text-align:right;margin-top:0.5rem;padding-top:0.4rem;border-top:1px solid rgba(255,255,255,0.05);">—</div>',
                 init: async function(widget) {
                     const container = widget.querySelector('.crypto-container');
+                    const updatedEl = widget.querySelector('.crypto-updated');
+                    let lastUpdated = null;
+                    setInterval(() => {
+                        if (lastUpdated && updatedEl) {
+                            const s = Math.floor((Date.now() - lastUpdated) / 1000);
+                            updatedEl.textContent = 'updated ' + (s < 60 ? s + 's ago' : Math.floor(s/60) + 'm ago');
+                        }
+                    }, 10000);
                     async function loadCrypto() {
-                        container.innerHTML = '<div style="padding:1rem;text-align:center;color:rgba(255,255,255,0.4);"><i class="fas fa-spinner fa-spin"></i></div>';
                         try {
                             const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true');
                             const data = await res.json();
                             container.innerHTML = '';
+                            lastUpdated = Date.now();
+                            if (updatedEl) updatedEl.textContent = 'updated just now';
                             const coins = [
                                 { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', color: '#f7931a' },
                                 { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', color: '#627eea' },
@@ -1337,7 +1440,7 @@
                 + '<div style="font-size:0.9rem;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 4px rgba(0,0,0,0.8);">' + title + '</div>'
                 + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;gap:0.5rem;flex-wrap:wrap;">'
                 + '<span style="color:rgba(168,85,247,0.9);">' + source + '</span>'
-                + (timeStr ? '<span>•</span><span>' + timeStr + '</span>' : '')
+                + (timeStr ? '<span>·</span><span>' + timeStr + '</span>' : '')
                 + '</div></div>';
             card.onmouseenter = () => { card.style.transform = 'translateY(-2px)'; card.style.borderColor = 'rgba(168,85,247,0.4)'; card.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)'; };
             card.onmouseleave = () => { card.style.transform = 'translateY(0)'; card.style.borderColor = 'rgba(255,255,255,0.08)'; card.style.boxShadow = 'none'; };
@@ -1345,60 +1448,88 @@
             return card;
         }
 
-        async function loadIntelNews() {
+        async function loadIntelNews(append = false) {
             const container = document.getElementById('intel-articles');
-            container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:rgba(255,255,255,0.5);"><i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i><div style="margin-top:1rem;">Loading...</div></div>';
+            const loadMoreBtn = document.getElementById('intel-load-more');
+            if (!append) {
+                container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:rgba(255,255,255,0.5);"><i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i><div style="margin-top:1rem;">Loading...</div></div>';
+                if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+            } else {
+                // Show loading spinner at bottom when appending
+                const spinner = document.createElement('div');
+                spinner.id = 'intel-load-spinner';
+                spinner.style.cssText = 'grid-column:1/-1;padding:1.5rem;text-align:center;color:rgba(255,255,255,0.5);';
+                spinner.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                container.appendChild(spinner);
+                if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+            }
 
             if (intelCat === 'all') {
                 try {
-                    // Fetch HN + all RSS feeds in parallel
-                    const hnPromise = fetch('https://hacker-news.firebaseio.com/v0/topstories.json?t=' + Date.now()).then(r => r.json());
-                    const rssPromises = [...intelFeeds.india, ...intelFeeds.world].map(f =>
-                        fetch('https://api.rss2json.com/v1/api.json?t=' + Date.now() + '&rss_url=' + encodeURIComponent(f.url)).then(r => r.json()).then(d => ({ data: d, name: f.name })).catch(() => null)
-                    );
-                    const [hnIds, ...rssResults] = await Promise.all([hnPromise, ...rssPromises]);
-
-                    const allCards = [];
-
-                    // 4 HN items
-                    for (let i = 0; i < 4; i++) {
-                        const item = await fetch('https://hacker-news.firebaseio.com/v0/item/' + hnIds[i] + '.json').then(r => r.json());
-                        const timeAgo = Math.floor((Date.now() / 1000 - item.time) / 60);
-                        const timeStr = timeAgo < 60 ? timeAgo + 'm ago' : Math.floor(timeAgo / 60) + 'h ago';
-                        let domain = '', favicon = '';
-                        if (item.url) { try { domain = new URL(item.url).hostname.replace('www.', ''); favicon = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64'; } catch(e) {} }
-                        const grad = intelGradients[allCards.length % intelGradients.length];
-                        const card = document.createElement('div');
-                        card.style.cssText = 'display:flex;align-items:stretch;border-radius:14px;overflow:hidden;background:rgba(0,0,0,0.45);cursor:pointer;transition:all 0.25s;border:1px solid rgba(255,255,255,0.08);';
-                        card.innerHTML = '<div style="width:130px;min-width:130px;height:100px;background:' + grad + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">'
-                            + (favicon ? '<img src="' + favicon + '" style="width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5));" onerror="this.style.display=\'none\'">' : '')
-                            + '</div><div style="padding:0.8rem 1rem;display:flex;flex-direction:column;justify-content:center;gap:0.35rem;flex:1;min-width:0;">'
-                            + '<div style="font-size:0.9rem;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 4px rgba(0,0,0,0.8);">' + item.title + '</div>'
-                            + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;gap:0.5rem;flex-wrap:wrap;">'
-                            + (domain ? '<span style="color:rgba(168,85,247,0.9);">' + domain + '</span><span>•</span>' : '')
-                            + '<span style="color:#10b981;"><i class="fas fa-arrow-up" style="font-size:0.6rem;margin-right:2px;"></i>' + (item.score||0) + '</span>'
-                            + '<span>•</span><span>' + timeStr + '</span></div></div>';
-                        card.onmouseenter = () => { card.style.transform = 'translateY(-2px)'; card.style.borderColor = 'rgba(168,85,247,0.4)'; card.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)'; };
-                        card.onmouseleave = () => { card.style.transform = 'translateY(0)'; card.style.borderColor = 'rgba(255,255,255,0.08)'; card.style.boxShadow = 'none'; };
-                        card.onclick = () => window.open(item.url || 'https://news.ycombinator.com/item?id=' + item.id, '_blank');
-                        allCards.push(card);
+                    const spinner = document.getElementById('intel-load-spinner');
+                    if (spinner) spinner.remove();
+                    if (!window._intelAllCache || !append) {
+                        const hnPromise = fetch('https://hacker-news.firebaseio.com/v0/topstories.json?t=' + Date.now()).then(r => r.json());
+                        const rssPromises = [...intelFeeds.india, ...intelFeeds.world].map(f =>
+                            fetch('https://api.rss2json.com/v1/api.json?t=' + Date.now() + '&rss_url=' + encodeURIComponent(f.url)).then(r => r.json()).then(d => ({ data: d, name: f.name })).catch(() => null)
+                        );
+                        const [hnIds, ...rssResults] = await Promise.all([hnPromise, ...rssPromises]);
+                        // Fetch 20 HN items in parallel
+                        const hnItems = await Promise.all(hnIds.slice(0, 20).map(id =>
+                            fetch('https://hacker-news.firebaseio.com/v0/item/' + id + '.json').then(r => r.json()).catch(() => null)
+                        ));
+                        const allEntries = [];
+                        hnItems.forEach(item => {
+                            if (!item) return;
+                            const timeStr = timeAgo(new Date(item.time * 1000));
+                            let domain = '', favicon = '';
+                            if (item.url) { try { domain = new URL(item.url).hostname.replace('www.', ''); favicon = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64'; } catch(e) {} }
+                            allEntries.push({ type: 'hn', item, domain, favicon, timeStr });
+                        });
+                        for (const result of rssResults) {
+                            if (!result || !result.data || !result.data.items) continue;
+                            for (const item of result.data.items) {
+                                allEntries.push({ type: 'rss', item, name: result.name });
+                            }
+                        }
+                        allEntries.sort(() => Math.random() - 0.5);
+                        window._intelAllCache = allEntries;
                     }
-
-                    // 2-3 items from each RSS feed
-                    for (const result of rssResults) {
-                        if (!result || !result.data || !result.data.items) continue;
-                        for (const item of result.data.items.slice(0, 3)) {
+                    const allEntries = window._intelAllCache;
+                    const PAGE = 20;
+                    const offset = append ? parseInt(container.getAttribute('data-all-offset') || '0') : 0;
+                    if (!append) container.innerHTML = '';
+                    const slice = allEntries.slice(offset, offset + PAGE);
+                    slice.forEach((entry, idx) => {
+                        const grad = intelGradients[(offset + idx) % intelGradients.length];
+                        let card;
+                        if (entry.type === 'hn') {
+                            const { item, domain, favicon, timeStr } = entry;
+                            card = document.createElement('div');
+                            card.style.cssText = 'display:flex;align-items:stretch;border-radius:14px;overflow:hidden;background:rgba(0,0,0,0.45);cursor:pointer;transition:all 0.25s;border:1px solid rgba(255,255,255,0.08);';
+                            card.innerHTML = '<div style="width:130px;min-width:130px;height:100px;background:' + grad + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">'
+                                + (favicon ? '<img src="' + favicon + '" style="width:38px;height:38px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5));" onerror="this.style.display=\'none\'">' : '')
+                                + '</div><div style="padding:0.8rem 1rem;display:flex;flex-direction:column;justify-content:center;gap:0.35rem;flex:1;min-width:0;">'
+                                + '<div style="font-size:0.9rem;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 4px rgba(0,0,0,0.8);">' + item.title + '</div>'
+                                + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;gap:0.5rem;flex-wrap:wrap;">'
+                                + (domain ? '<span style="color:rgba(168,85,247,0.9);">' + domain + '</span><span>·</span>' : '')
+                                + '<span style="color:#10b981;"><i class="fas fa-arrow-up" style="font-size:0.6rem;margin-right:2px;"></i>' + (item.score||0) + '</span>'
+                                + '<span>·</span><span>' + timeStr + '</span></div></div>';
+                            card.onmouseenter = () => { card.style.transform = 'translateY(-2px)'; card.style.borderColor = 'rgba(168,85,247,0.4)'; card.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)'; };
+                            card.onmouseleave = () => { card.style.transform = 'translateY(0)'; card.style.borderColor = 'rgba(255,255,255,0.08)'; card.style.boxShadow = 'none'; };
+                            card.onclick = () => window.open(item.url || 'https://news.ycombinator.com/item?id=' + item.id, '_blank');
+                        } else {
+                            const { item, name } = entry;
                             const thumb = item.thumbnail || item.enclosure?.link || '';
                             const pubDate = item.pubDate ? new Date(item.pubDate) : null;
-                            const timeStr = pubDate ? Math.floor((Date.now() - pubDate) / 60000) + 'm ago' : '';
-                            allCards.push(buildIntelCard(item.title, item.link, result.name, thumb, timeStr, intelGradients[allCards.length % intelGradients.length]));
+                            const timeStr = pubDate ? timeAgo(pubDate) : '';
+                            card = buildIntelCard(item.title, item.link, name, thumb, timeStr, grad);
                         }
-                    }
-
-                    // Shuffle so it's mixed
-                    allCards.sort(() => Math.random() - 0.5);
-                    container.innerHTML = '';
-                    allCards.forEach(c => container.appendChild(c));
+                        container.appendChild(card);
+                    });
+                    const newOffset = offset + slice.length;
+                    container.setAttribute('data-all-offset', newOffset);
+                    if (loadMoreBtn) loadMoreBtn.style.display = newOffset < allEntries.length ? 'block' : 'none';
                 } catch(e) {
                     container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:#ef4444;">Failed to load</div>';
                 }
@@ -1407,14 +1538,16 @@
 
             if (intelCat === 'hn') {
                 try {
+                    const spinner = document.getElementById('intel-load-spinner');
+                    if (spinner) spinner.remove();
                     const res = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json?t=' + Date.now());
                     const ids = await res.json();
-                    container.innerHTML = '';
-                    for (let i = 0; i < 12; i++) {
+                    const offset = append ? parseInt(container.getAttribute('data-hn-offset') || '20') : 0;
+                    if (!append) container.innerHTML = '';
+                    for (let i = offset; i < offset + 20; i++) {
                         const itemRes = await fetch('https://hacker-news.firebaseio.com/v0/item/' + ids[i] + '.json');
                         const item = await itemRes.json();
-                        const timeAgo = Math.floor((Date.now() / 1000 - item.time) / 60);
-                        const timeStr = timeAgo < 60 ? timeAgo + 'm ago' : Math.floor(timeAgo / 60) + 'h ago';
+                        const timeStr = timeAgo(new Date(item.time * 1000));
                         let domain = '', favicon = '';
                         if (item.url) {
                             try { domain = new URL(item.url).hostname.replace('www.', ''); favicon = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64'; } catch(e) {}
@@ -1428,36 +1561,50 @@
                             + '<div style="padding:0.8rem 1rem;display:flex;flex-direction:column;justify-content:center;gap:0.35rem;flex:1;min-width:0;">'
                             + '<div style="font-size:0.9rem;font-weight:600;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 4px rgba(0,0,0,0.8);">' + item.title + '</div>'
                             + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);display:flex;gap:0.5rem;flex-wrap:wrap;">'
-                            + (domain ? '<span style="color:rgba(168,85,247,0.9);">' + domain + '</span><span>•</span>' : '')
+                            + (domain ? '<span style="color:rgba(168,85,247,0.9);">' + domain + '</span><span>·</span>' : '')
                             + '<span style="color:#10b981;"><i class="fas fa-arrow-up" style="font-size:0.6rem;margin-right:2px;"></i>' + (item.score||0) + '</span>'
-                            + '<span>•</span><span>' + timeStr + '</span>'
+                            + '<span>·</span><span>' + timeStr + '</span>'
                             + '</div></div>';
                         card.onmouseenter = () => { card.style.transform = 'translateY(-2px)'; card.style.borderColor = 'rgba(168,85,247,0.4)'; card.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)'; };
                         card.onmouseleave = () => { card.style.transform = 'translateY(0)'; card.style.borderColor = 'rgba(255,255,255,0.08)'; card.style.boxShadow = 'none'; };
                         card.onclick = () => window.open(item.url || 'https://news.ycombinator.com/item?id=' + item.id, '_blank');
                         container.appendChild(card);
                     }
-                } catch(e) {
+                    container.setAttribute('data-hn-offset', offset + 20);
+                    if (loadMoreBtn) loadMoreBtn.style.display = 'block';                } catch(e) {
                     container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:#ef4444;">Failed to load</div>';
                 }
             } else {
                 const feeds = intelFeeds[intelCat];
+                const PAGE_SIZE = 20;
                 try {
-                    const results = await Promise.all(feeds.map(f => fetch('https://api.rss2json.com/v1/api.json?t=' + Date.now() + '&rss_url=' + encodeURIComponent(f.url)).then(r => r.json()).catch(() => null)));
-                    container.innerHTML = '';
-                    let count = 0;
-                    for (let fi = 0; fi < results.length; fi++) {
-                        const result = results[fi];
-                        if (!result || !result.items) continue;
-                        for (const item of result.items.slice(0, 8)) {
-                            const thumb = item.thumbnail || item.enclosure?.link || '';
-                            const pubDate = item.pubDate ? new Date(item.pubDate) : null;
-                            const timeStr = pubDate ? Math.floor((Date.now() - pubDate) / 60000) + 'm ago' : '';
-                            container.appendChild(buildIntelCard(item.title, item.link, feeds[fi].name, thumb, timeStr, intelGradients[count % intelGradients.length]));
-                            count++;
-                        }
+                    const spinner = document.getElementById('intel-load-spinner');
+                    if (spinner) spinner.remove();
+                    // Cache RSS items per category so load more doesn't re-fetch
+                    if (!window._intelRssCache) window._intelRssCache = {};
+                    let allItems = window._intelRssCache[intelCat];
+                    if (!append || !allItems) {
+                        const results = await Promise.all(feeds.map((f, fi) =>
+                            fetch('https://api.rss2json.com/v1/api.json?t=' + Date.now() + '&rss_url=' + encodeURIComponent(f.url))
+                                .then(r => r.json()).then(d => (d.items || []).map(i => ({ ...i, _src: feeds[fi].name }))).catch(() => [])
+                        ));
+                        allItems = results.flat();
+                        window._intelRssCache[intelCat] = allItems;
                     }
-                    if (count === 0) container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:rgba(255,255,255,0.5);">No articles found</div>';
+                    const offset = append ? parseInt(container.getAttribute('data-rss-offset') || '0') : 0;
+                    if (!append) container.innerHTML = '';
+                    const slice = allItems.slice(offset, offset + PAGE_SIZE);
+                    let count = 0;
+                    for (const item of slice) {
+                        const thumb = item.thumbnail || item.enclosure?.link || '';
+                        const pubDate = item.pubDate ? new Date(item.pubDate) : null;
+                        const timeStr = pubDate ? timeAgo(pubDate) : '';
+                        container.appendChild(buildIntelCard(item.title, item.link, item._src, thumb, timeStr, intelGradients[(offset + count) % intelGradients.length]));
+                        count++;
+                    }
+                    container.setAttribute('data-rss-offset', offset + count);
+                    if (count === 0 && !append) container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:rgba(255,255,255,0.5);">No articles found</div>';
+                    if (loadMoreBtn) loadMoreBtn.style.display = (offset + count < allItems.length) ? 'block' : 'none';
                 } catch(e) {
                     container.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:#ef4444;">Failed to load</div>';
                 }
@@ -1466,16 +1613,32 @@
 
         function initIntelPage() {
             if (!intelInitialized) {
+                const loadMoreBtn = document.getElementById('intel-load-more');
                 document.querySelectorAll('.intel-cat').forEach(btn => {
                     btn.addEventListener('click', function() {
                         document.querySelectorAll('.intel-cat').forEach(b => { b.style.background = 'rgba(255,255,255,0.08)'; b.style.borderColor = 'rgba(255,255,255,0.15)'; });
                         this.style.background = 'rgba(168,85,247,0.3)';
                         this.style.borderColor = 'rgba(168,85,247,0.5)';
                         intelCat = this.getAttribute('data-cat');
+                        document.getElementById('intel-articles').removeAttribute('data-hn-offset');
+                        document.getElementById('intel-articles').removeAttribute('data-rss-offset');
+                        document.getElementById('intel-articles').removeAttribute('data-all-offset');
+                        if (window._intelRssCache) delete window._intelRssCache[intelCat];
+                        window._intelAllCache = null;
                         loadIntelNews();
                     });
                 });
-                document.getElementById('intel-refresh').addEventListener('click', loadIntelNews);
+                document.getElementById('intel-refresh').addEventListener('click', () => {
+                    document.getElementById('intel-articles').removeAttribute('data-hn-offset');
+                    document.getElementById('intel-articles').removeAttribute('data-rss-offset');
+                    document.getElementById('intel-articles').removeAttribute('data-all-offset');
+                    if (window._intelRssCache) window._intelRssCache = {};
+                    window._intelAllCache = null;
+                    loadIntelNews();
+                });
+                if (loadMoreBtn) {
+                    loadMoreBtn.addEventListener('click', () => loadIntelNews(true));
+                }
                 intelInitialized = true;
             }
             loadIntelNews();
@@ -1575,10 +1738,10 @@
                 const current = data.current_condition[0];
                 const temp = Math.round(current.temp_C);
                 document.getElementById('nav-weather-temp').textContent = temp + '°C';
-                const icons = { 113: '☀️', 116: '⛅', 119: '☁️', 122: '☁️', 143: '🌫️', 176: '🌦️', 200: '⛈️', 293: '🌧️', 296: '🌧️', 299: '🌧️', 302: '🌧️', 305: '🌧️', 308: '🌧️', 323: '🌨️', 326: '🌨️', 329: '❄️', 332: '❄️', 335: '❄️', 338: '❄️', 386: '⛈️', 389: '⛈️', 392: '⛈️', 395: '❄️' };
-                document.getElementById('nav-weather-icon').textContent = icons[parseInt(current.weatherCode)] || '🌤️';
+                const icons = { 113: '☀️', 116: '⛅', 119: '☁️', 122: '☁️', 143: '🌫️', 176: '🌦️', 200: '⛈️', 293: '🌧️', 296: '🌧️', 299: '🌧️', 302: '🌧️', 305: '🌧️', 308: '🌧️', 323: '❄️', 326: '❄️', 329: '❄️', 332: '❄️', 335: '❄️', 338: '❄️', 386: '⛈️', 389: '⛈️', 392: '⛈️', 395: '⛈️' };
+                document.getElementById('nav-weather-icon').textContent = icons[parseInt(current.weatherCode)] || '🌡️';
             } catch (err) {
-                document.getElementById('nav-weather-temp').textContent = '--°';
+                document.getElementById('nav-weather-temp').textContent = '--°C';
             }
         }
         updateNavWeather();
@@ -1601,6 +1764,13 @@
         const qlBtn = document.getElementById('quick-links-btn');
         const qlAddBtn = document.getElementById('ql-add');
 
+        function getFavicon(url) {
+            try {
+                const domain = new URL(url).hostname;
+                return 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
+            } catch(e) { return ''; }
+        }
+
         function renderQL() {
             qlGrid.innerHTML = '';
             qlLinks.forEach((link, i) => {
@@ -1608,10 +1778,11 @@
                 item.href = link.url;
                 item.target = '_blank';
                 item.className = 'ql-item';
-                item.innerHTML = `
-                    <div class="ql-icon"><i class="${link.icon}" style="font-size:1.4rem;color:${link.color};"></i></div>
-                    <span class="ql-name">${link.name}</span>
-                    <button class="ql-delete" data-i="${i}">×</button>`;
+                const favicon = getFavicon(link.url);
+                const iconHtml = favicon
+                    ? `<img src="${favicon}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><i class="${link.icon || 'fas fa-link'}" style="color:${link.color||'#fff'};display:none;"></i>`
+                    : `<i class="${link.icon || 'fas fa-link'}" style="color:${link.color||'#fff'};"></i>`;
+                item.innerHTML = `<div class="ql-icon">${iconHtml}</div><span class="ql-name">${link.name}</span><button class="ql-delete" title="Remove">&times;</button>`;
                 item.querySelector('.ql-delete').addEventListener('click', (e) => {
                     e.preventDefault(); e.stopPropagation();
                     qlLinks.splice(i, 1);
@@ -1627,21 +1798,46 @@
             e.stopPropagation();
             qlPanel.classList.toggle('open');
         });
+
+        const qlAddForm = document.getElementById('ql-add-form');
+        const qlUrlInput = document.getElementById('ql-url-input');
+        const qlNameInput = document.getElementById('ql-name-input');
+        const qlSaveBtn = document.getElementById('ql-save');
+
         qlAddBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const url = prompt('Enter URL:'); if (!url) return;
-            const name = prompt('Enter name:'); if (!name) return;
-            const icon = prompt('Font Awesome icon class (e.g. fab fa-github):') || 'fas fa-link';
-            const color = prompt('Icon color (e.g. #FF0000):') || '#fff';
-            qlLinks.push({ url, name, icon, color });
+            qlAddForm.classList.toggle('show');
+            if (qlAddForm.classList.contains('show')) qlUrlInput.focus();
+        });
+
+        qlSaveBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const url = qlUrlInput.value.trim();
+            const name = qlNameInput.value.trim();
+            if (!url || !name) return;
+            const fullUrl = url.startsWith('http') ? url : 'https://' + url;
+            qlLinks.push({ url: fullUrl, name, icon: 'fas fa-link', color: '#fff' });
             localStorage.setItem('quickLinks', JSON.stringify(qlLinks));
             renderQL();
+            qlUrlInput.value = '';
+            qlNameInput.value = '';
+            qlAddForm.classList.remove('show');
         });
+
+        [qlUrlInput, qlNameInput].forEach(inp => inp.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') qlSaveBtn.click();
+            e.stopPropagation();
+        }));
+
         document.addEventListener('click', (e) => {
             if (!qlPanel.contains(e.target) && e.target !== qlBtn) {
                 qlPanel.classList.remove('open');
+                qlAddForm.classList.remove('show');
             }
         });
     </script>
 </body>
 </html>
+
+
+
