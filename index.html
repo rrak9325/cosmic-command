@@ -1250,7 +1250,7 @@
                 init: function(widget) {
                     const CLIENT_ID = 'b5b12ae713ce44c68eb6660bf9ff8613';
                     const REDIRECT = location.origin + location.pathname;
-                    const SCOPES = 'user-read-currently-playing user-read-playback-state user-modify-playback-state';
+                    const SCOPES = 'user-read-currently-playing user-read-playback-state';
                     const container = widget.querySelector('.sp-container');
 
                     // PKCE helpers
@@ -1370,7 +1370,9 @@
                     async function poll() {
                         const token = await getValidToken();
                         if (!token) { renderLogin(); return; }
-                        const data = await apiCall('/me/player/currently-playing');
+                        // Try /me/player first (more reliable), fall back to currently-playing
+                        let data = await apiCall('/me/player');
+                        if (!data || !data.item) data = await apiCall('/me/player/currently-playing');
                         renderNowPlaying(data);
                     }
 
