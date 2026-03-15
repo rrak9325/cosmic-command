@@ -1393,7 +1393,7 @@
                     const params = new URLSearchParams(location.search);
                     const code = params.get('code');
                     if (code && localStorage.getItem('sp_verifier')) {
-                        getToken(code).then(() => poll());
+                        getToken(code).then((token) => { if (token) setTimeout(poll, 500); });
                     } else if (localStorage.getItem('sp_token')) {
                         poll();
                         setInterval(poll, 10000);
