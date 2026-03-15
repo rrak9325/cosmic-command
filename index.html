@@ -1271,20 +1271,26 @@
 
                     async function getToken(code) {
                         const verifier = localStorage.getItem('sp_verifier');
+                        if (!verifier) { console.error('Spotify: no verifier found'); renderLogin(); return null; }
                         const res = await fetch('https://accounts.spotify.com/api/token', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                             body: new URLSearchParams({ grant_type: 'authorization_code', code, redirect_uri: REDIRECT, client_id: CLIENT_ID, code_verifier: verifier })
                         });
                         const data = await res.json();
+                        console.log('Spotify token response:', data);
                         if (data.access_token) {
                             localStorage.setItem('sp_token', data.access_token);
                             localStorage.setItem('sp_refresh', data.refresh_token);
                             localStorage.setItem('sp_expires', Date.now() + data.expires_in * 1000);
-                            // Clean URL
+                            localStorage.removeItem('sp_verifier');
                             history.replaceState({}, '', location.pathname);
+                        } else {
+                            console.error('Spotify token error:', data);
+                            localStorage.removeItem('sp_verifier');
+                            renderLogin();
                         }
-                        return data.access_token;
+                        return data.access_token || null;
                     }
 
                     async function refreshToken() {
