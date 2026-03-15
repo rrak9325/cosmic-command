@@ -989,7 +989,7 @@
                     async function loadRSS(cat) {
                         container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(255,255,255,0.5);"><i class="fas fa-spinner fa-spin" style="font-size:2rem;"></i><div style="margin-top:1rem;">Loading...</div></div>';
                         const feeds = rssFeeds[cat];
-                        const proxy = 'https://api.rss2json.com/v1/api.json?rss_url=';
+                        const proxy = 'https://api.rss2json.com/v1/api.json?t=' + Date.now() + '&rss_url=';
                         try {
                             const results = await Promise.all(feeds.map(f => fetch(proxy + encodeURIComponent(f.url)).then(r => r.json()).catch(() => null)));
                             container.innerHTML = '';
@@ -1223,7 +1223,7 @@
                     // Fetch HN + all RSS feeds in parallel
                     const hnPromise = fetch('https://hacker-news.firebaseio.com/v0/topstories.json?t=' + Date.now()).then(r => r.json());
                     const rssPromises = [...intelFeeds.india, ...intelFeeds.world].map(f =>
-                        fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(f.url)).then(r => r.json()).then(d => ({ data: d, name: f.name })).catch(() => null)
+                        fetch('https://api.rss2json.com/v1/api.json?t=' + Date.now() + '&rss_url=' + encodeURIComponent(f.url)).then(r => r.json()).then(d => ({ data: d, name: f.name })).catch(() => null)
                     );
                     const [hnIds, ...rssResults] = await Promise.all([hnPromise, ...rssPromises]);
 
@@ -1312,7 +1312,7 @@
             } else {
                 const feeds = intelFeeds[intelCat];
                 try {
-                    const results = await Promise.all(feeds.map(f => fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(f.url)).then(r => r.json()).catch(() => null)));
+                    const results = await Promise.all(feeds.map(f => fetch('https://api.rss2json.com/v1/api.json?t=' + Date.now() + '&rss_url=' + encodeURIComponent(f.url)).then(r => r.json()).catch(() => null)));
                     container.innerHTML = '';
                     let count = 0;
                     for (let fi = 0; fi < results.length; fi++) {
