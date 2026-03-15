@@ -1112,6 +1112,280 @@
                     loadMeme();
                     memeRefresh.addEventListener('click', loadMeme);
                 }
+            },
+            notes: {
+                title: '📝 Sticky Notes',
+                content: '<textarea class="notes-area" placeholder="Type your notes here..." style="width:100%;height:260px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:\'Space Grotesk\',sans-serif;font-size:0.9rem;padding:0.75rem;resize:none;outline:none;line-height:1.6;"></textarea><div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;"><span class="notes-saved" style="font-size:0.7rem;color:rgba(255,255,255,0.3);"></span><button class="notes-clear" style="font-size:0.7rem;color:rgba(239,68,68,0.6);background:none;border:none;cursor:pointer;">Clear</button></div>',
+                init: function(widget) {
+                    const area = widget.querySelector('.notes-area');
+                    const saved = widget.querySelector('.notes-saved');
+                    const clear = widget.querySelector('.notes-clear');
+                    area.value = localStorage.getItem('stickyNotes') || '';
+                    let saveTimeout;
+                    area.addEventListener('input', () => {
+                        clearTimeout(saveTimeout);
+                        saved.textContent = 'saving...';
+                        saveTimeout = setTimeout(() => {
+                            localStorage.setItem('stickyNotes', area.value);
+                            saved.textContent = 'saved ✓';
+                            setTimeout(() => { saved.textContent = ''; }, 2000);
+                        }, 600);
+                    });
+                    clear.addEventListener('click', () => {
+                        if (confirm('Clear all notes?')) { area.value = ''; localStorage.removeItem('stickyNotes'); }
+                    });
+                }
+            },
+            pomodoro: {
+                title: '🍅 Pomodoro',
+                content: '<div style="text-align:center;padding:0.5rem 0;"><div style="font-size:0.75rem;color:rgba(255,255,255,0.4);letter-spacing:0.15em;margin-bottom:0.5rem;" class="pomo-mode">FOCUS</div><div style="font-size:3.5rem;font-weight:300;color:#a855f7;text-shadow:0 0 20px rgba(168,85,247,0.6);font-variant-numeric:tabular-nums;" class="pomo-time">25:00</div><div style="display:flex;justify-content:center;gap:0.75rem;margin-top:1rem;"><button class="pomo-start" style="padding:0.6rem 1.5rem;background:rgba(168,85,247,0.3);border:1px solid rgba(168,85,247,0.5);border-radius:20px;color:#fff;cursor:pointer;font-family:inherit;font-size:0.85rem;">Start</button><button class="pomo-reset" style="padding:0.6rem 1rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;color:#fff;cursor:pointer;font-family:inherit;font-size:0.85rem;">Reset</button></div><div style="display:flex;justify-content:center;gap:0.5rem;margin-top:1rem;"><button class="pomo-mode-btn active-pomo" data-work="25" data-label="FOCUS" style="padding:0.3rem 0.75rem;background:rgba(168,85,247,0.2);border:1px solid rgba(168,85,247,0.4);border-radius:12px;color:#fff;cursor:pointer;font-size:0.7rem;font-family:inherit;">25m</button><button class="pomo-mode-btn" data-work="5" data-label="BREAK" style="padding:0.3rem 0.75rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#fff;cursor:pointer;font-size:0.7rem;font-family:inherit;">5m</button><button class="pomo-mode-btn" data-work="15" data-label="LONG BREAK" style="padding:0.3rem 0.75rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:#fff;cursor:pointer;font-size:0.7rem;font-family:inherit;">15m</button></div></div>',
+                init: function(widget) {
+                    let totalSecs = 25 * 60, remaining = totalSecs, running = false, interval = null;
+                    const timeEl = widget.querySelector('.pomo-time');
+                    const modeEl = widget.querySelector('.pomo-mode');
+                    const startBtn = widget.querySelector('.pomo-start');
+                    const resetBtn = widget.querySelector('.pomo-reset');
+                    function fmt(s) { return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); }
+                    function tick() {
+                        if (remaining <= 0) {
+                            clearInterval(interval); running = false;
+                            startBtn.textContent = 'Start';
+                            new Notification('Pomodoro', { body: modeEl.textContent + ' session done!' });
+                            return;
+                        }
+                        remaining--;
+                        timeEl.textContent = fmt(remaining);
+                    }
+                    startBtn.addEventListener('click', () => {
+                        if (running) { clearInterval(interval); running = false; startBtn.textContent = 'Start'; }
+                        else {
+                            if (Notification.permission === 'default') Notification.requestPermission();
+                            interval = setInterval(tick, 1000); running = true; startBtn.textContent = 'Pause';
+                        }
+                    });
+                    resetBtn.addEventListener('click', () => {
+                        clearInterval(interval); running = false; remaining = totalSecs;
+                        timeEl.textContent = fmt(remaining); startBtn.textContent = 'Start';
+                    });
+                    widget.querySelectorAll('.pomo-mode-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            widget.querySelectorAll('.pomo-mode-btn').forEach(b => { b.style.background='rgba(255,255,255,0.05)'; b.style.borderColor='rgba(255,255,255,0.1)'; });
+                            this.style.background='rgba(168,85,247,0.2)'; this.style.borderColor='rgba(168,85,247,0.4)';
+                            clearInterval(interval); running = false; startBtn.textContent = 'Start';
+                            totalSecs = parseInt(this.dataset.work) * 60; remaining = totalSecs;
+                            modeEl.textContent = this.dataset.label; timeEl.textContent = fmt(remaining);
+                        });
+                    });
+                }
+            },
+            github: {
+                title: '🐙 GitHub Activity',
+                content: '<div class="gh-container"></div>',
+                init: async function(widget) {
+                    const container = widget.querySelector('.gh-container');
+                    container.innerHTML = '<div style="padding:1rem;text-align:center;color:rgba(255,255,255,0.4);"><i class="fas fa-spinner fa-spin"></i></div>';
+                    try {
+                        const res = await fetch('https://api.github.com/users/rrak9325/events/public?per_page=10');
+                        const events = await res.json();
+                        if (!events.length) { container.innerHTML = '<div style="padding:1rem;color:rgba(255,255,255,0.4);text-align:center;">No recent activity</div>'; return; }
+                        container.innerHTML = '';
+                        const typeIcon = { PushEvent:'fa-code-branch', CreateEvent:'fa-plus', IssuesEvent:'fa-exclamation-circle', PullRequestEvent:'fa-code-pull-request', WatchEvent:'fa-star', ForkEvent:'fa-code-fork' };
+                        events.slice(0, 8).forEach(ev => {
+                            const icon = typeIcon[ev.type] || 'fa-circle';
+                            const repo = ev.repo.name.split('/')[1];
+                            const time = Math.floor((Date.now() - new Date(ev.created_at)) / 60000);
+                            const timeStr = time < 60 ? time + 'm ago' : Math.floor(time/60) + 'h ago';
+                            let desc = ev.type.replace('Event','');
+                            if (ev.type === 'PushEvent') desc = ev.payload.commits?.length + ' commit(s)';
+                            const el = document.createElement('div');
+                            el.style.cssText = 'display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.05);';
+                            el.innerHTML = '<i class="fas ' + icon + '" style="color:#a855f7;font-size:0.75rem;width:14px;flex-shrink:0;"></i>'
+                                + '<div style="flex:1;min-width:0;"><div style="font-size:0.8rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + repo + '</div>'
+                                + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.4);">' + desc + ' • ' + timeStr + '</div></div>';
+                            container.appendChild(el);
+                        });
+                    } catch(e) { container.innerHTML = '<div style="padding:1rem;color:#ef4444;text-align:center;">Failed to load</div>'; }
+                }
+            },
+            crypto: {
+                title: '📈 Crypto',
+                content: '<div class="crypto-container"></div>',
+                init: async function(widget) {
+                    const container = widget.querySelector('.crypto-container');
+                    async function loadCrypto() {
+                        container.innerHTML = '<div style="padding:1rem;text-align:center;color:rgba(255,255,255,0.4);"><i class="fas fa-spinner fa-spin"></i></div>';
+                        try {
+                            const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true');
+                            const data = await res.json();
+                            container.innerHTML = '';
+                            const coins = [
+                                { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', color: '#f7931a' },
+                                { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', color: '#627eea' },
+                                { id: 'solana', name: 'Solana', symbol: 'SOL', color: '#9945ff' }
+                            ];
+                            coins.forEach(coin => {
+                                const d = data[coin.id];
+                                if (!d) return;
+                                const change = d.usd_24h_change?.toFixed(2);
+                                const up = change >= 0;
+                                const el = document.createElement('div');
+                                el.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:0.65rem 0;border-bottom:1px solid rgba(255,255,255,0.05);';
+                                el.innerHTML = '<div style="display:flex;align-items:center;gap:0.6rem;">'
+                                    + '<div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:' + coin.color + ';">' + coin.symbol[0] + '</div>'
+                                    + '<div><div style="font-size:0.85rem;font-weight:600;">' + coin.name + '</div>'
+                                    + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.4);">' + coin.symbol + '</div></div></div>'
+                                    + '<div style="text-align:right;"><div style="font-size:0.9rem;font-weight:600;">$' + d.usd.toLocaleString() + '</div>'
+                                    + '<div style="font-size:0.75rem;color:' + (up ? '#10b981' : '#ef4444') + ';">' + (up ? '▲' : '▼') + ' ' + Math.abs(change) + '%</div></div>';
+                                container.appendChild(el);
+                            });
+                        } catch(e) { container.innerHTML = '<div style="padding:1rem;color:#ef4444;text-align:center;">Failed to load</div>'; }
+                    }
+                    loadCrypto();
+                    setInterval(loadCrypto, 60000);
+                }
+            },
+            spotify: {
+                title: '🎵 Spotify',
+                content: '<div class="sp-container" style="text-align:center;padding:0.5rem 0;"></div>',
+                init: function(widget) {
+                    const CLIENT_ID = 'b5b12ae713ce44c68eb6660bf9ff8613';
+                    const REDIRECT = location.origin + location.pathname;
+                    const SCOPES = 'user-read-currently-playing user-read-playback-state user-modify-playback-state';
+                    const container = widget.querySelector('.sp-container');
+
+                    // PKCE helpers
+                    function rand(len) { const arr = new Uint8Array(len); crypto.getRandomValues(arr); return arr; }
+                    function b64url(buf) { return btoa(String.fromCharCode(...buf)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,''); }
+                    async function sha256(str) { const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)); return buf; }
+
+                    async function login() {
+                        const verifier = b64url(rand(32));
+                        const challenge = b64url(new Uint8Array(await sha256(verifier)));
+                        localStorage.setItem('sp_verifier', verifier);
+                        const url = 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID
+                            + '&response_type=code&redirect_uri=' + encodeURIComponent(REDIRECT)
+                            + '&scope=' + encodeURIComponent(SCOPES)
+                            + '&code_challenge_method=S256&code_challenge=' + challenge;
+                        location.href = url;
+                    }
+
+                    async function getToken(code) {
+                        const verifier = localStorage.getItem('sp_verifier');
+                        const res = await fetch('https://accounts.spotify.com/api/token', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: new URLSearchParams({ grant_type: 'authorization_code', code, redirect_uri: REDIRECT, client_id: CLIENT_ID, code_verifier: verifier })
+                        });
+                        const data = await res.json();
+                        if (data.access_token) {
+                            localStorage.setItem('sp_token', data.access_token);
+                            localStorage.setItem('sp_refresh', data.refresh_token);
+                            localStorage.setItem('sp_expires', Date.now() + data.expires_in * 1000);
+                            // Clean URL
+                            history.replaceState({}, '', location.pathname);
+                        }
+                        return data.access_token;
+                    }
+
+                    async function refreshToken() {
+                        const refresh = localStorage.getItem('sp_refresh');
+                        if (!refresh) return null;
+                        const res = await fetch('https://accounts.spotify.com/api/token', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: refresh, client_id: CLIENT_ID })
+                        });
+                        const data = await res.json();
+                        if (data.access_token) {
+                            localStorage.setItem('sp_token', data.access_token);
+                            localStorage.setItem('sp_expires', Date.now() + data.expires_in * 1000);
+                            if (data.refresh_token) localStorage.setItem('sp_refresh', data.refresh_token);
+                        }
+                        return data.access_token;
+                    }
+
+                    async function getValidToken() {
+                        const expires = parseInt(localStorage.getItem('sp_expires') || '0');
+                        if (Date.now() < expires - 60000) return localStorage.getItem('sp_token');
+                        return await refreshToken();
+                    }
+
+                    async function apiCall(endpoint, method = 'GET') {
+                        const token = await getValidToken();
+                        if (!token) return null;
+                        const res = await fetch('https://api.spotify.com/v1' + endpoint, {
+                            method,
+                            headers: { 'Authorization': 'Bearer ' + token }
+                        });
+                        if (res.status === 204 || res.status === 202) return {};
+                        if (!res.ok) return null;
+                        return res.json();
+                    }
+
+                    function renderNowPlaying(data) {
+                        if (!data || !data.item) {
+                            container.innerHTML = '<div style="color:rgba(255,255,255,0.4);font-size:0.85rem;padding:1rem;">Nothing playing right now</div>'
+                                + '<button class="sp-logout" style="margin-top:0.5rem;font-size:0.7rem;color:rgba(255,255,255,0.3);background:none;border:none;cursor:pointer;">Disconnect</button>';
+                            container.querySelector('.sp-logout').addEventListener('click', logout);
+                            return;
+                        }
+                        const track = data.item;
+                        const art = track.album.images[0]?.url || '';
+                        const name = track.name;
+                        const artist = track.artists.map(a => a.name).join(', ');
+                        const isPlaying = data.is_playing;
+                        const progress = data.progress_ms || 0;
+                        const duration = track.duration_ms || 1;
+                        const pct = Math.round((progress / duration) * 100);
+
+                        container.innerHTML = '<div style="display:flex;gap:0.75rem;align-items:center;text-align:left;">'
+                            + '<img src="' + art + '" style="width:64px;height:64px;border-radius:10px;flex-shrink:0;object-fit:cover;">'
+                            + '<div style="flex:1;min-width:0;">'
+                            + '<div style="font-size:0.9rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>'
+                            + '<div style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-top:0.15rem;">' + artist + '</div>'
+                            + '<div style="display:flex;align-items:center;gap:0.4rem;margin-top:0.5rem;">'
+                            + '<span style="font-size:0.65rem;color:rgba(255,255,255,0.3);">' + (isPlaying ? '▶ playing' : '⏸ paused') + '</span></div>'
+                            + '<div style="margin-top:0.4rem;height:3px;background:rgba(255,255,255,0.1);border-radius:2px;">'
+                            + '<div style="height:100%;width:' + pct + '%;background:#1DB954;border-radius:2px;"></div></div>'
+                            + '</div></div>'
+                            + '<button class="sp-logout" style="margin-top:0.75rem;font-size:0.65rem;color:rgba(255,255,255,0.2);background:none;border:none;cursor:pointer;">Disconnect</button>';
+
+                        container.querySelector('.sp-logout').addEventListener('click', logout);
+                    }
+
+                    function logout() {
+                        ['sp_token','sp_refresh','sp_expires','sp_verifier'].forEach(k => localStorage.removeItem(k));
+                        renderLogin();
+                    }
+
+                    function renderLogin() {
+                        container.innerHTML = '<div style="padding:0.5rem 0;">'
+                            + '<div style="font-size:2rem;margin-bottom:0.5rem;">🎵</div>'
+                            + '<div style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:1rem;">Connect Spotify to see what\'s playing</div>'
+                            + '<button class="sp-login-btn" style="padding:0.6rem 1.5rem;background:#1DB954;border:none;border-radius:20px;color:#000;font-weight:600;cursor:pointer;font-family:inherit;font-size:0.85rem;">Connect Spotify</button>'
+                            + '</div>';
+                        container.querySelector('.sp-login-btn').addEventListener('click', login);
+                    }
+
+                    async function poll() {
+                        const token = await getValidToken();
+                        if (!token) { renderLogin(); return; }
+                        const data = await apiCall('/me/player/currently-playing');
+                        renderNowPlaying(data);
+                    }
+
+                    // Handle OAuth callback
+                    const params = new URLSearchParams(location.search);
+                    const code = params.get('code');
+                    if (code && localStorage.getItem('sp_verifier')) {
+                        getToken(code).then(() => poll());
+                    } else if (localStorage.getItem('sp_token')) {
+                        poll();
+                        setInterval(poll, 10000);
+                    } else {
+                        renderLogin();
+                    }
+                }
             }
         };
 
